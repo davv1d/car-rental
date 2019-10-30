@@ -23,80 +23,80 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldSaveUser() {
         //Given
-        User patient = new User("test name", "test password", "email@test.com", Role.ROLE_PATIENT);
+        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
         //When
-        userRepository.save(patient);
+        userRepository.save(user);
         //Then
-        assertNotNull(patient.getId());
+        assertNotNull(user.getId());
         //Clean up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
     }
 
     @Test
     public void shouldFetchAllUsers() {
         //Given
-        User patient = new User("test patient", "test patient", "email@patient.com", Role.ROLE_PATIENT);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
         User admin = new User("test admin", "test admin", "email@admin.com", Role.ROLE_ADMIN);
-        userRepository.save(patient);
+        userRepository.save(user);
         userRepository.save(admin);
         //When
         List<User> users = userRepository.findAll();
         //Then
         assertEquals(2, users.size());
         //Clean Up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
         userRepository.deleteById(admin.getId());
     }
 
     @Test
     public void shouldFetchUserById() {
         //Given
-        User patient = new User("test patient", "test patient", "email@patient.com", Role.ROLE_PATIENT);
-        userRepository.save(patient);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        userRepository.save(user);
         //When
-        Optional<User> optionalPatient = userRepository.findById(patient.getId());
+        Optional<User> optionalPatient = userRepository.findById(user.getId());
         //Then
         assertTrue(optionalPatient.isPresent());
         //Clean Up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
     }
 
     @Test
     public void shouldFetchUserByUsername() {
         //Given
-        User patient = new User("test patient", "test patient", "email@patient.com", Role.ROLE_PATIENT);
-        userRepository.save(patient);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        userRepository.save(user);
         //When
-        Optional<User> optionalPatient = userRepository.findByUsername(patient.getUsername());
+        Optional<User> optionalPatient = userRepository.findByUsername(user.getUsername());
         //Then
         assertTrue(optionalPatient.isPresent());
         //Clean Up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
     }
 
     @Test
     public void shouldExistsByUsername() {
         //Given
-        User patient = new User("test patient", "test patient", "email@patient.com", Role.ROLE_PATIENT);
-        userRepository.save(patient);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        userRepository.save(user);
         //When
-        boolean exist = userRepository.existsByUsername(patient.getUsername());
+        boolean exist = userRepository.existsByUsername(user.getUsername());
         //Then
         assertTrue(exist);
         //Clean Up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
     }
 
     @Test
     public void shouldExistsByEmail() {
         //Given
-        User patient = new User("test patient", "test patient", "email@patient.com", Role.ROLE_PATIENT);
-        userRepository.save(patient);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        userRepository.save(user);
         //When
-        boolean exist = userRepository.existsByEmail(patient.getEmail());
+        boolean exist = userRepository.existsByEmail(user.getEmail());
         //Then
         assertTrue(exist);
         //Clean Up
-        userRepository.deleteById(patient.getId());
+        userRepository.deleteById(user.getId());
     }
 }

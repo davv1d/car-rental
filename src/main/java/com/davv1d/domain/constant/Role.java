@@ -1,7 +1,11 @@
 package com.davv1d.domain.constant;
 
 public enum Role {
-    ROLE_PATIENT,
+    ROLE_CLIENT,
     ROLE_ADMIN,
-    ROLE_DOCTOR
+    ROLE_DOCTOR;
+
+    public String getName() {
+        return this.name();
+    }
 }
