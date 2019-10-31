@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.davv1d.security.JwtProperties.*;
+import static com.davv1d.security.JwtProperties.STRING_HEADER;
+import static com.davv1d.security.JwtProperties.TOKEN_TYPE;
 
 @Component
 public class JwtAuthTokenFilter extends OncePerRequestFilter {

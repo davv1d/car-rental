@@ -1,6 +1,5 @@
 package com.davv1d.domain;
 
-import com.davv1d.domain.constant.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +12,5 @@ public class UserDto {
     private String username;
     private String password;
     private String email;
-    private Role role;
+    private String role;
 }

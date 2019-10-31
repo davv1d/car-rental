@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static com.davv1d.security.JwtProperties.*;
+import static com.davv1d.security.JwtProperties.EXPIRATION;
+import static com.davv1d.security.JwtProperties.SECRET;
 
 @Component
 public class JwtProvider {
