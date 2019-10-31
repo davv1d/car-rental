@@ -20,7 +20,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public String registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         return userFacade.registerUser(userDto);
     }
 }

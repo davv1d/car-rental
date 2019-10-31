@@ -1,5 +1,8 @@
 package com.davv1d.functional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -8,7 +11,9 @@ public abstract class Result<V> implements Serializable {
     private Result() {
     }
 
-    public abstract <U> String effect(Function<V, String> f);
+//    public abstract <U> String effect(Function<V, String> f);
+
+    public abstract <U> ResponseEntity<?> effectHttp(Function<V, U> success);
 
     public abstract V getOrElse(V defaultValue);
 
@@ -25,9 +30,14 @@ public abstract class Result<V> implements Serializable {
             this.message = message;
         }
 
+//        @Override
+//        public <U> String effect(Function<V, String> f) {
+//            return message;
+//        }
+
         @Override
-        public <U> String effect(Function<V, String> f) {
-            return message;
+        public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         @Override
@@ -59,9 +69,14 @@ public abstract class Result<V> implements Serializable {
             this.value = value;
         }
 
+//        @Override
+//        public <U> String effect(Function<V, String> f) {
+//            return f.apply(value);
+//        }
+
         @Override
-        public <U> String effect(Function<V, String> f) {
-            return f.apply(value);
+        public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
+            return ResponseEntity.ok(success.apply(value));
         }
 
         @Override

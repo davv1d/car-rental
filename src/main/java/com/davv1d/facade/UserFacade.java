@@ -51,10 +51,14 @@ public class UserFacade {
         return ResponseEntity.ok(new LoginResponseDto(jwtToken));
     }
 
-    public String registerUser(UserDto userDto) {
+    public ResponseEntity<?> registerUser(UserDto userDto) {
         return RoleValidator.roleValidator(userDto)
                 .map(userMapper::mapToUser)
                 .flatMap(userValidator::saveUserValidate)
-                .effect(userService::saveUser);
+                .effectHttp(userService::saveUser);
+//        return RoleValidator.roleValidator(userDto)
+//                .map(userMapper::mapToUser)
+//                .flatMap(userValidator::saveUserValidate)
+//                .effect(userService::saveUser);
     }
 }
