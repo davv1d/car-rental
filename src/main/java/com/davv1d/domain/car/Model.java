@@ -31,7 +31,7 @@ public class Model {
             targetEntity = Car.class,
             mappedBy = "model",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Car> cars = new ArrayList<>();
 
