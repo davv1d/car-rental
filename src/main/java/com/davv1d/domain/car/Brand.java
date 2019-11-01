@@ -23,14 +23,6 @@ public class Brand {
     private String name;
 
     @OneToMany(
-            targetEntity = Car.class,
-            mappedBy = "brand",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    private List<Car> cars = new ArrayList<>();
-
-    @OneToMany(
             targetEntity = Model.class,
             mappedBy = "brand",
             cascade = CascadeType.ALL,

@@ -24,7 +24,7 @@ public class Car {
     @Column(name = "vin_number", length = 50, unique = true)
     private String vinNumber;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Brand.class)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
