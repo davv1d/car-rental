@@ -35,4 +35,11 @@ public class Car {
     @NotNull
     @Column(name = "availability")
     private boolean availability;
+
+    public Car(@NotNull String vinNumber, Brand brand, Model model, @NotNull boolean availability) {
+        this.vinNumber = vinNumber;
+        this.brand = brand;
+        this.model = model;
+        this.availability = availability;
+    }
 }
