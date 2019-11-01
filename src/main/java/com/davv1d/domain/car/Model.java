@@ -8,9 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
@@ -25,7 +23,7 @@ public class Model {
     @Column(name = "name", length = 20, unique = true)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Brand.class)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -33,7 +31,7 @@ public class Model {
             targetEntity = Car.class,
             mappedBy = "model",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Car> cars = new ArrayList<>();
 

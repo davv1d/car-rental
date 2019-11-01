@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -16,20 +15,12 @@ import java.util.Objects;
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "brand_id")
     private Long id;
 
     @NotNull
     @Column(name = "name", length = 20, unique = true)
     private String name;
-
-    @OneToMany(
-            targetEntity = Model.class,
-            mappedBy = "brand",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    private List<Model> carModels = new ArrayList<>();
 
     @OneToMany(
             targetEntity = Car.class,
@@ -38,6 +29,14 @@ public class Brand {
             fetch = FetchType.EAGER
     )
     private List<Car> cars = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Model.class,
+            mappedBy = "brand",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Model> models = new ArrayList<>();
 
     public Brand(@NotNull String name) {
         this.name = name.toUpperCase();
