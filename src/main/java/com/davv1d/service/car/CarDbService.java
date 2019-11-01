@@ -1,6 +1,8 @@
 package com.davv1d.service.car;
 
+import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
+import com.davv1d.domain.car.Model;
 import com.davv1d.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,56 +15,50 @@ public class CarDbService {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private BrandDbService brandDbService;
+
+    @Autowired
+    private ModelDbService modelDbService;
 
     public Car saveCarIfItDoesNotExist(final Car car) {
         return fetchByVinNumber(car.getVinNumber())
                 .orElseGet(() -> save(car));
     }
 
-    private Car save(Car car) {
-        return null;
+    private Car save(final Car car) {
+        String brandName = car.getBrand().getName();
+        String modelName = car.getModel().getName();
+        Brand brand = brandDbService.saveBrandIfItDoesNotExist(brandName);
+        Model model = modelDbService.saveModelIfItDoesNotExist(modelName, brandName);
+        return carRepository.save(new Car(car.getVinNumber(), brand, model, car.isAvailability()));
     }
 
-    private Optional<Car> fetchByVinNumber(String vinNumber) {
+    private Optional<Car> fetchByVinNumber(final String vinNumber) {
         return carRepository.findByVinNumber(vinNumber.toUpperCase());
     }
 
-    //
-//    public OwnedCar saveOwnedCarIfItDoesNotExist(final Car car) {
-//        return fetchByVinNumber(car.getVinNumber())
-//                .orElseGet(() -> save(car));
-//    }
-//
-//    private OwnedCar save(final Car car) {
-//        CarModel carModel = carModelDbService.saveCarModelIfItDoesNotExist(car.getModel(), car.getBrand());
-//        return ownedCarRepository.save(new OwnedCar(car.getVinNumber(), carModel, car.isAvailability()));
-//    }
-//
-//    public Optional<OwnedCar> fetchByVinNumber(String vinNumber) {
-//        return ownedCarRepository.findByVinNumber(vinNumber.toUpperCase());
-//    }
-//
-//    public void deleteCar(String vinNumber) {
-//        fetchByVinNumber(vinNumber)
-//                .ifPresent(this::delete);
-//    }
-//
-//    private void delete(final OwnedCar ownedCar) {
-//        ownedCar.getModel().getOwnedCars().remove(ownedCar);
-//        OwnedCar updatedOwnedCar = new OwnedCar(ownedCar.getId(), ownedCar.getVinNumber(), null, ownedCar.isAvailability());
-//        ownedCarRepository.save(updatedOwnedCar);
-//        ownedCarRepository.deleteById(ownedCar.getId());
-//    }
-//
-//    public void setAvailability(final Car car) {
-//        fetchByVinNumber(car.getVinNumber())
-//                .ifPresent(ownedCar -> {
-//                    OwnedCar updatedCar = new OwnedCar(ownedCar.getId(), ownedCar.getVinNumber(), ownedCar.getModel(), car.isAvailability());
-//                    ownedCarRepository.save(updatedCar);
-//                });
-//    }
-//
-//    public List<OwnedCar> fetchAllCars() {
-//        return ownedCarRepository.findAll();
-//    }
+    public void deleteCar(String vinNumber) {
+        fetchByVinNumber(vinNumber)
+                .ifPresent(this::delete);
+    }
+
+    private void delete(final Car car) {
+        car.getModel().getCars().remove(car);
+        Car updatedCar = new Car(car.getId(), car.getVinNumber(),null, null, car.isAvailability());
+        carRepository.save(updatedCar);
+        carRepository.deleteById(car.getId());
+    }
+
+    public void setAvailability(final Car car) {
+        fetchByVinNumber(car.getVinNumber())
+                .ifPresent(car1 -> {
+                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), car.isAvailability());
+                    carRepository.save(updatedCar);
+                });
+    }
+
+    public List<Car> fetchAllCars() {
+        return carRepository.findAll();
+    }
 }

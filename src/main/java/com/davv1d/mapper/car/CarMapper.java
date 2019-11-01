@@ -1,6 +1,8 @@
 package com.davv1d.mapper.car;
 
+import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
+import com.davv1d.domain.car.Model;
 import com.davv1d.domain.car.dto.CarDto;
 import org.springframework.stereotype.Component;
 
@@ -17,5 +19,10 @@ public class CarMapper {
         return cars.stream()
                 .map(this::mapToCarDto)
                 .collect(Collectors.toList());
+    }
+
+    public Car mapToCar(final CarDto carDto) {
+        Brand brand = new Brand(carDto.getBrand());
+        return new Car(carDto.getVinNumber(), brand, new Model(carDto.getModel(), brand), carDto.isAvailability());
     }
 }

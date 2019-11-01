@@ -22,4 +22,6 @@ public interface BrandRepository extends CrudRepository<Brand, Long> {
     List<Brand> findAll();
 
     Optional<Brand> findByName(String name);
+
+    void deleteByName(String name);
 }

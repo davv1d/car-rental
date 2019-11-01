@@ -22,4 +22,6 @@ public interface ModelRepository extends CrudRepository<Model, Long> {
     List<Model> findAll();
 
     Optional<Model> findByName(String name);
+
+    void deleteByName(String name);
 }
