@@ -1,6 +1,6 @@
 package com.davv1d.repository;
 
-import com.davv1d.domain.User;
+import com.davv1d.domain.user.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +21,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findById(Long userId);
 
     Optional<User> findByUsername(String username);
+
+    void deleteByUsername(String username);
 
     boolean existsByUsername(String username);
 

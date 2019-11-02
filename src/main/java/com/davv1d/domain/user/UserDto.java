@@ -1,16 +1,15 @@
-package com.davv1d.domain;
+package com.davv1d.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class UserDto {
-    private Long id;
+    private long id;
     private String username;
-    private String password;
     private String email;
     private String role;
 }

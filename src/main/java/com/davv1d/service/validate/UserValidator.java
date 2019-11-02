@@ -1,6 +1,6 @@
 package com.davv1d.service.validate;
 
-import com.davv1d.domain.User;
+import com.davv1d.domain.user.User;
 import com.davv1d.functional.Result;
 import com.davv1d.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

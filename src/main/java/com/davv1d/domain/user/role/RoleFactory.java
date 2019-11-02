@@ -1,4 +1,4 @@
-package com.davv1d.domain.constant;
+package com.davv1d.domain.user.role;
 
 public class RoleFactory {
     public static Role createRole(String roleName) {

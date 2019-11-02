@@ -1,13 +1,18 @@
-package com.davv1d.domain;
+package com.davv1d.domain.user;
 
-import com.davv1d.domain.constant.Role;
+import com.davv1d.domain.user.role.Role;
+import com.davv1d.domain.rental.Rental;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -34,6 +39,23 @@ public class User {
     @NotNull
     private Role role;
 
+    @OneToMany(
+            targetEntity = Rental.class,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Rental> rentals = new ArrayList<>();
+
+    public User(@NotNull String username) {
+        this.username = username;
+    }
+
+    public User(@NotNull String username, @NotNull String email) {
+        this.username = username;
+        this.email = email;
+    }
+
     public User(@NotNull String username, @NotNull String password, @NotNull String email, @NotNull Role role) {
         this.username = username;
         this.password = password;
@@ -41,7 +63,4 @@ public class User {
         this.role = role;
     }
 
-    public User(@NotNull String username) {
-        this.username = username;
-    }
 }

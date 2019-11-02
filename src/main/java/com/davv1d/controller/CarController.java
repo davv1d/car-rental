@@ -1,6 +1,7 @@
 package com.davv1d.controller;
 
 import com.davv1d.domain.car.dto.CarDto;
+import com.davv1d.errors.CarNotFoundException;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.service.car.BrandDbService;
 import com.davv1d.service.car.CarDbService;
@@ -27,8 +28,8 @@ public class CarController {
     @Autowired
     private ModelDbService modelDbService;
 
-    @GetMapping("/getCars")
-    public List<CarDto> getCars() {
+    @GetMapping("/fetchCars")
+    public List<CarDto> fetchAllCars() {
         return carMapper.mapToCarDtoList(carDbService.fetchAllCars());
     }
 
@@ -37,28 +38,34 @@ public class CarController {
         carDbService.saveCarIfItDoesNotExist(carMapper.mapToCar(carDto));
     }
 
-    @PutMapping("/setAvailability")
+    @PutMapping("/availability")
     public void setAvailability(@RequestBody CarDto carDto) {
         carDbService.setAvailability(carMapper.mapToCar(carDto));
     }
 
-    @DeleteMapping("/deleteCar")
-    public void deleteCar(@RequestParam String vinNumber) {
-        carDbService.deleteCar(vinNumber);
+    @DeleteMapping("/delete/{vin}")
+    public void deleteCar(@PathVariable String vin) {
+        carDbService.deleteCar(vin);
     }
 
-    @DeleteMapping("/brand")
-    public void deleteBrand(@RequestParam String brandName) {
-        brandDbService.deleteBrand(brandName);
+    @DeleteMapping("/brand/{name}")
+    public void deleteBrand(@PathVariable String name) {
+        brandDbService.deleteBrand(name);
     }
 
-    @DeleteMapping("/model")
-    public void deleteModel(@RequestParam String modelName) {
-        modelDbService.deleteByName(modelName);
+    @DeleteMapping("/model/{name}")
+    public void deleteModel(@PathVariable String name) {
+        modelDbService.deleteByName(name);
     }
 
     @GetMapping("/availability")
     public List<CarDto> fetchAvailabilityCars(@RequestParam LocalDateTime dateOfRent, @RequestParam LocalDateTime dateOfReturn) {
         return carMapper.mapToCarDtoList(carDbService.fetchAvailabilityCars(dateOfRent, dateOfReturn));
+    }
+
+    @GetMapping("/fetchCar/{vin}")
+    public CarDto fetchCarByVin(@PathVariable String vin) throws CarNotFoundException {
+        return carMapper.mapToCarDto(carDbService.fetchByVinNumber(vin)
+                .orElseThrow(() -> new CarNotFoundException("Not found car with this vin")));
     }
 }

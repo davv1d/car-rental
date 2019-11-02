@@ -1,7 +1,7 @@
 package com.davv1d.repository;
 
-import com.davv1d.domain.User;
-import com.davv1d.domain.constant.Role;
+import com.davv1d.domain.user.User;
+import com.davv1d.domain.user.role.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

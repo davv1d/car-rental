@@ -1,6 +1,6 @@
 package com.davv1d.security.user;
 
-import com.davv1d.domain.User;
+import com.davv1d.domain.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,11 +1,5 @@
 package com.davv1d.repository;
 
-import com.davv1d.domain.User;
-import com.davv1d.domain.car.Brand;
-import com.davv1d.domain.car.Car;
-import com.davv1d.domain.car.Model;
-import com.davv1d.domain.constant.Role;
-import com.davv1d.domain.rental.Rental;
 import com.davv1d.service.UserDbService;
 import com.davv1d.service.car.CarDbService;
 import com.davv1d.service.rental.RentalDbService;
@@ -14,15 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

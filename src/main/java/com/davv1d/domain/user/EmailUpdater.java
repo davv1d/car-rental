@@ -1,13 +1,13 @@
-package com.davv1d.domain.login;
+package com.davv1d.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class LoginRequestDto {
+public class EmailUpdater {
     private String username;
-    private String password;
+    private String email;
 }

@@ -1,10 +1,10 @@
 package com.davv1d.facade;
 
-import com.davv1d.domain.UserDto;
-import com.davv1d.domain.login.LoginRequest;
-import com.davv1d.domain.login.LoginRequestDto;
-import com.davv1d.domain.login.LoginResponseDto;
-import com.davv1d.mapper.UserMapper;
+import com.davv1d.domain.user.login.SingUpDto;
+import com.davv1d.domain.user.login.LoginRequest;
+import com.davv1d.domain.user.login.LoginRequestDto;
+import com.davv1d.domain.user.login.LoginResponseDto;
+import com.davv1d.mapper.login.SingUpMapper;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.security.JwtProvider;
 import com.davv1d.service.UserDbService;
@@ -36,7 +36,7 @@ public class UserFacade {
     private LoginRequestMapper loginRequestMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private SingUpMapper signUpMapper;
 
     public ResponseEntity<?> authenticateUser(LoginRequestDto loginRequestDto) {
         LoginRequest loginRequest = loginRequestMapper.mapToLoginRequest(loginRequestDto);
@@ -51,9 +51,9 @@ public class UserFacade {
         return ResponseEntity.ok(new LoginResponseDto(jwtToken));
     }
 
-    public ResponseEntity<?> registerUser(UserDto userDto) {
-        return RoleValidator.roleValidator(userDto)
-                .map(userMapper::mapToUser)
+    public ResponseEntity<?> registerUser(SingUpDto singUpDto) {
+        return RoleValidator.roleValidator(singUpDto)
+                .map(signUpMapper::mapToUser)
                 .flatMap(userValidator::saveUserValidate)
                 .effectHttp(userDbService::saveUser);
 //        return RoleValidator.roleValidator(userDto)

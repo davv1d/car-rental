@@ -1,11 +1,9 @@
 package com.davv1d.mapper.rental;
 
-import com.davv1d.domain.User;
-import com.davv1d.domain.car.Car;
+import com.davv1d.domain.user.User;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.rental.RentalDto;
 import com.davv1d.mapper.car.CarMapper;
-import com.davv1d.service.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

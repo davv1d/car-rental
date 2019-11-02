@@ -1,4 +1,4 @@
-package com.davv1d.domain.login;
+package com.davv1d.domain.user.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
