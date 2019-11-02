@@ -40,4 +40,8 @@ public class User {
         this.email = email;
         this.role = role;
     }
+
+    public User(@NotNull String username) {
+        this.username = username;
+    }
 }

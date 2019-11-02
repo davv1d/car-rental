@@ -31,14 +31,6 @@ public class RentalDbService {
         }
     }
 
-    private Optional<Car> isCar(Rental rental) {
-        return carDbService.fetchByVinNumber(rental.getCar().getVinNumber());
-    }
-
-    private Optional<User> isUser(Rental rental) {
-        return userDbService.findUserByUsername(rental.getUser().getUsername());
-    }
-
     public List<Rental> fetchRentalsByCarVinNumber(final String vinNumber) {
         return rentalRepository.fetchRentalsByCarVinNumber(vinNumber);
     }
@@ -56,5 +48,9 @@ public class RentalDbService {
         Rental updatedRental = new Rental(rental.getId(), null, null, rental.getDateOfRent(), rental.getDateOfReturn());
         rentalRepository.save(updatedRental);
         rentalRepository.deleteById(updatedRental.getId());
+    }
+
+    public List<Rental> fetchAll() {
+        return rentalRepository.findAll();
     }
 }
