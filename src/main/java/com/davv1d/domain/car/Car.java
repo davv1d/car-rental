@@ -1,5 +1,6 @@
 package com.davv1d.domain.car;
 
+import com.davv1d.domain.rental.Rental;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
+@NamedNativeQuery(
+        name = "Car.fetchAvailabilityCars",
+        query = "select * from cars " +
+                "left join rentals on cars.id = rentals.car_id " +
+                "where (rentals.date_of_rent is null or " +
+                "(:DATE_OF_RENT < rentals.date_of_rent and :DATE_OF_RETURN < rentals.date_of_rent) or " +
+                "(:DATE_OF_RENT > rentals.date_of_return and :DATE_OF_RETURN > rentals.date_of_return)) and " +
+                "cars.availability = true",
+        resultClass = Car.class
+)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -41,5 +54,16 @@ public class Car {
         this.brand = brand;
         this.model = model;
         this.availability = availability;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", vinNumber='" + vinNumber + '\'' +
+                ", brand=" + brand.getName() +
+                ", model=" + model.getName() +
+                ", availability=" + availability +
+                "}\n";
     }
 }

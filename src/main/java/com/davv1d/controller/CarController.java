@@ -8,11 +8,12 @@ import com.davv1d.service.car.ModelDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/cars")
 public class CarController {
     @Autowired
     private CarMapper carMapper;
@@ -26,33 +27,38 @@ public class CarController {
     @Autowired
     private ModelDbService modelDbService;
 
-    @GetMapping("/cars")
+    @GetMapping("/getCars")
     public List<CarDto> getCars() {
         return carMapper.mapToCarDtoList(carDbService.fetchAllCars());
     }
 
-    @PostMapping("/cars")
+    @PostMapping("/createCars")
     public void createCar(@RequestBody CarDto carDto) {
         carDbService.saveCarIfItDoesNotExist(carMapper.mapToCar(carDto));
     }
 
-    @PutMapping("/cars")
+    @PutMapping("/setAvailability")
     public void setAvailability(@RequestBody CarDto carDto) {
         carDbService.setAvailability(carMapper.mapToCar(carDto));
     }
 
-    @DeleteMapping("/cars")
+    @DeleteMapping("/deleteCar")
     public void deleteCar(@RequestParam String vinNumber) {
         carDbService.deleteCar(vinNumber);
     }
 
-    @DeleteMapping("/cars/brand")
+    @DeleteMapping("/brand")
     public void deleteBrand(@RequestParam String brandName) {
         brandDbService.deleteBrand(brandName);
     }
 
-    @DeleteMapping("/cars/model")
+    @DeleteMapping("/model")
     public void deleteModel(@RequestParam String modelName) {
         modelDbService.deleteByName(modelName);
+    }
+
+    @GetMapping("/availability")
+    public List<CarDto> fetchAvailabilityCars(@RequestParam LocalDateTime dateOfRent, @RequestParam LocalDateTime dateOfReturn) {
+        return carMapper.mapToCarDtoList(carDbService.fetchAvailabilityCars(dateOfRent, dateOfReturn));
     }
 }

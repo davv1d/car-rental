@@ -2,7 +2,6 @@ package com.davv1d.service.car;
 
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Model;
-import com.davv1d.repository.BrandRepository;
 import com.davv1d.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

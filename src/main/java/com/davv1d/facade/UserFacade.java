@@ -7,7 +7,7 @@ import com.davv1d.domain.login.LoginResponseDto;
 import com.davv1d.mapper.UserMapper;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.security.JwtProvider;
-import com.davv1d.service.UserService;
+import com.davv1d.service.UserDbService;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class UserFacade {
     private UserValidator userValidator;
 
     @Autowired
-    private UserService userService;
+    private UserDbService userDbService;
 
     @Autowired
     private JwtProvider jwtProvider;
@@ -55,7 +55,7 @@ public class UserFacade {
         return RoleValidator.roleValidator(userDto)
                 .map(userMapper::mapToUser)
                 .flatMap(userValidator::saveUserValidate)
-                .effectHttp(userService::saveUser);
+                .effectHttp(userDbService::saveUser);
 //        return RoleValidator.roleValidator(userDto)
 //                .map(userMapper::mapToUser)
 //                .flatMap(userValidator::saveUserValidate)

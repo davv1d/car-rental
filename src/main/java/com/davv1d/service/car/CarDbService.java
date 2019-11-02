@@ -7,6 +7,7 @@ import com.davv1d.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class CarDbService {
                 .orElseGet(() -> save(car));
     }
 
-    private Car save(final Car car) {
+    public Car save(final Car car) {
         String brandName = car.getBrand().getName();
         String modelName = car.getModel().getName();
         Brand brand = brandDbService.saveBrandIfItDoesNotExist(brandName);
@@ -34,7 +35,7 @@ public class CarDbService {
         return carRepository.save(new Car(car.getVinNumber(), brand, model, car.isAvailability()));
     }
 
-    private Optional<Car> fetchByVinNumber(final String vinNumber) {
+    public Optional<Car> fetchByVinNumber(final String vinNumber) {
         return carRepository.findByVinNumber(vinNumber.toUpperCase());
     }
 
@@ -60,5 +61,9 @@ public class CarDbService {
 
     public List<Car> fetchAllCars() {
         return carRepository.findAll();
+    }
+
+    public List<Car> fetchAvailabilityCars(final LocalDateTime dateOfRent, final LocalDateTime dateOfReturn) {
+        return carRepository.fetchAvailabilityCars(dateOfRent, dateOfReturn);
     }
 }
