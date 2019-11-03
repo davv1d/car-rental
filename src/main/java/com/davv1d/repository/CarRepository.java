@@ -29,5 +29,8 @@ public interface CarRepository extends CrudRepository<Car, Long> {
     @Query(nativeQuery = true)
     List<Car> fetchAvailabilityCars(@Param("DATE_OF_RENT") LocalDateTime dateOfRent, @Param("DATE_OF_RETURN") LocalDateTime dateOfReturn);
 
-    boolean existsByVinNumber(final String vinNumber);
+    @Override
+    long count();
+
+    long countByAvailability(boolean availability);
 }
