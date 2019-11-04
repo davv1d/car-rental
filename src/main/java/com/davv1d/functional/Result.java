@@ -11,8 +11,6 @@ public abstract class Result<V> implements Serializable {
     private Result() {
     }
 
-//    public abstract <U> String effect(Function<V, String> f);
-
     public abstract <U> ResponseEntity<?> effectHttp(Function<V, U> success);
 
     public abstract V getOrElse(V defaultValue);
@@ -29,11 +27,6 @@ public abstract class Result<V> implements Serializable {
         private Failure(String message) {
             this.message = message;
         }
-
-//        @Override
-//        public <U> String effect(Function<V, String> f) {
-//            return message;
-//        }
 
         @Override
         public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
@@ -68,11 +61,6 @@ public abstract class Result<V> implements Serializable {
             super();
             this.value = value;
         }
-
-//        @Override
-//        public <U> String effect(Function<V, String> f) {
-//            return f.apply(value);
-//        }
 
         @Override
         public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {

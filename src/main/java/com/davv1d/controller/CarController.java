@@ -1,14 +1,19 @@
 package com.davv1d.controller;
 
+import com.davv1d.domain.car.Car;
+import com.davv1d.domain.car.RepairStats;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.errors.CarNotFoundException;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.service.db.BrandDbService;
 import com.davv1d.service.db.CarDbService;
 import com.davv1d.service.db.ModelDbService;
+import com.davv1d.service.db.RepairStatsDbService;
+import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +33,9 @@ public class CarController {
     @Autowired
     private ModelDbService modelDbService;
 
+    @Autowired
+    private RepairStatsDbService repairStatsDbService;
+
     @GetMapping("/getCars")
     public List<CarDto> getCars() {
         return carMapper.mapToCarDtoList(carDbService.getCars());
@@ -39,8 +47,11 @@ public class CarController {
     }
 
     @PutMapping("/availability")
-    public void setAvailability(@RequestBody CarDto carDto) {
-        carDbService.setAvailability(carMapper.mapToCar(carDto));
+    public void setAvailability(@RequestBody CarDto carDto, Principal principal) {
+        Car car = carMapper.mapToCar(carDto);
+        if (carDbService.setAvailability(car)) {
+            repairStatsDbService.save(new RepairStats(principal.getName(), car.getVinNumber(), LocalDateTime.now(), car.isAvailability()));
+        }
     }
 
     @DeleteMapping("/delete/{vin}")

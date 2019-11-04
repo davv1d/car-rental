@@ -51,12 +51,14 @@ public class CarDbService {
         carRepository.deleteById(car.getId());
     }
 
-    public void setAvailability(final Car car) {
-        getByVinNumber(car.getVinNumber())
-                .ifPresent(car1 -> {
-                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), car.isAvailability());
-                    carRepository.save(updatedCar);
-                });
+    public boolean setAvailability(final Car car) {
+        Optional<Car> optionalVin = getByVinNumber(car.getVinNumber());
+        if (optionalVin.isPresent()) {
+            Car car1 = optionalVin.get();
+            Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), car.isAvailability());
+            return carRepository.save(updatedCar) != null;
+        }
+        return false;
     }
 
     public List<Car> getCars() {

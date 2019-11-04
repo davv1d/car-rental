@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -18,8 +19,12 @@ public class UserLogin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
+
+    @NotNull
     @Column(name = "username")
     private String username;
+
+    @NotNull
     @Column(name = "login_date")
     private LocalDateTime loginDate;
 
