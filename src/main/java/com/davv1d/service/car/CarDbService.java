@@ -23,7 +23,7 @@ public class CarDbService {
     private ModelDbService modelDbService;
 
     public Car saveCarIfItDoesNotExist(final Car car) {
-        return fetchByVinNumber(car.getVinNumber())
+        return getByVinNumber(car.getVinNumber())
                 .orElseGet(() -> save(car));
     }
 
@@ -35,12 +35,12 @@ public class CarDbService {
         return carRepository.save(new Car(car.getVinNumber(), brand, model, car.isAvailability()));
     }
 
-    public Optional<Car> fetchByVinNumber(final String vinNumber) {
+    public Optional<Car> getByVinNumber(final String vinNumber) {
         return carRepository.findByVinNumber(vinNumber.toUpperCase());
     }
 
     public void deleteCar(String vinNumber) {
-        fetchByVinNumber(vinNumber)
+        getByVinNumber(vinNumber)
                 .ifPresent(this::delete);
     }
 
@@ -52,18 +52,18 @@ public class CarDbService {
     }
 
     public void setAvailability(final Car car) {
-        fetchByVinNumber(car.getVinNumber())
+        getByVinNumber(car.getVinNumber())
                 .ifPresent(car1 -> {
                     Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), car.isAvailability());
                     carRepository.save(updatedCar);
                 });
     }
 
-    public List<Car> fetchAllCars() {
+    public List<Car> getCars() {
         return carRepository.findAll();
     }
 
-    public List<Car> fetchAvailabilityCars(final LocalDateTime dateOfRent, final LocalDateTime dateOfReturn) {
+    public List<Car> getAvailabilityCars(final LocalDateTime dateOfRent, final LocalDateTime dateOfReturn) {
         return carRepository.fetchAvailabilityCars(dateOfRent, dateOfReturn);
     }
 }

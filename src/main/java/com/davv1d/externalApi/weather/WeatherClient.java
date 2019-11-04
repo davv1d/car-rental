@@ -1,4 +1,4 @@
-package com.davv1d.weather;
+package com.davv1d.externalApi.weather;
 
 import com.davv1d.config.WeatherApiConfig;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class WeatherClient {
     @Autowired
     private WeatherApiConfig weatherApiConfig;
 
-    public <T> Optional<T> fetchCityCondition(String city, String path, Class<T> responseType) {
+    public <T> Optional<T> getCityCondition(String city, String path, Class<T> responseType) {
         URI uri = getUri(city, path);
         try {
             return Optional.ofNullable(restTemplate.getForObject(uri, responseType));

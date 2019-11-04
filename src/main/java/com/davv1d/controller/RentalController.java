@@ -18,22 +18,22 @@ public class RentalController {
     private RentalMapper rentalMapper;
 
     @GetMapping("/fetch")
-    public List<RentalDto> fetchAll() {
+    public List<RentalDto> getRentals() {
         return rentalMapper.mapToRentalDtoList(rentalDbService.fetchAll());
     }
 
     @GetMapping("/fetch/{vin}")
-    public List<RentalDto> fetchRentalsByCarVinNumber(@PathVariable String vin) {
+    public List<RentalDto> getRentalsByCarVinNumber(@PathVariable String vin) {
         return rentalMapper.mapToRentalDtoList(rentalDbService.fetchRentalsByCarVinNumber(vin));
     }
 
     @GetMapping("/fetch/{username}")
-    public List<RentalDto> fetchRentalsByUsername(@PathVariable String username) {
+    public List<RentalDto> getRentalsByUsername(@PathVariable String username) {
         return rentalMapper.mapToRentalDtoList(rentalDbService.fetchRentalsByUsername(username));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteBRentalsById(@PathVariable long id) {
+    public void deleteRentalsById(@PathVariable long id) {
         rentalDbService.deleteById(id);
     }
 

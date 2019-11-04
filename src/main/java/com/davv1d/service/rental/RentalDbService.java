@@ -24,7 +24,7 @@ public class RentalDbService {
     private UserDbService userDbService;
 
     public void save(final Rental rental) {
-        Optional<Car> optionalCar = carDbService.fetchByVinNumber(rental.getCar().getVinNumber());
+        Optional<Car> optionalCar = carDbService.getByVinNumber(rental.getCar().getVinNumber());
         Optional<User> optionalUser = userDbService.findUserByUsername(rental.getUser().getUsername());
         if (optionalCar.isPresent() && optionalUser.isPresent()) {
             rentalRepository.save(new Rental(optionalUser.get(), optionalCar.get(), rental.getDateOfRent(), rental.getDateOfReturn()));

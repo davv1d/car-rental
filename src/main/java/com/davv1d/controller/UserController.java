@@ -25,12 +25,12 @@ public class UserController {
     private EmailUpdaterMapper emailUpdaterMapper;
 
     @GetMapping("/users")
-    public List<UserDto> fetchAll() {
+    public List<UserDto> getAll() {
         return userMapper.mapToUserDtoList(userDbService.fetchAll());
     }
 
     @GetMapping(value = "/users/{username}")
-    public UserDto fetchUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
+    public UserDto getUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
         return userMapper.mapToUserDto(userDbService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found name " + username)));
     }
 

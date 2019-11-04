@@ -28,9 +28,9 @@ public class CarController {
     @Autowired
     private ModelDbService modelDbService;
 
-    @GetMapping("/fetchCars")
-    public List<CarDto> fetchAllCars() {
-        return carMapper.mapToCarDtoList(carDbService.fetchAllCars());
+    @GetMapping("/getCars")
+    public List<CarDto> getCars() {
+        return carMapper.mapToCarDtoList(carDbService.getCars());
     }
 
     @PostMapping("/createCars")
@@ -59,13 +59,13 @@ public class CarController {
     }
 
     @GetMapping("/availability")
-    public List<CarDto> fetchAvailabilityCars(@RequestParam LocalDateTime dateOfRent, @RequestParam LocalDateTime dateOfReturn) {
-        return carMapper.mapToCarDtoList(carDbService.fetchAvailabilityCars(dateOfRent, dateOfReturn));
+    public List<CarDto> getAvailabilityCars(@RequestParam LocalDateTime dateOfRent, @RequestParam LocalDateTime dateOfReturn) {
+        return carMapper.mapToCarDtoList(carDbService.getAvailabilityCars(dateOfRent, dateOfReturn));
     }
 
     @GetMapping("/fetchCar/{vin}")
-    public CarDto fetchCarByVin(@PathVariable String vin) throws CarNotFoundException {
-        return carMapper.mapToCarDto(carDbService.fetchByVinNumber(vin)
+    public CarDto getCarByVin(@PathVariable String vin) throws CarNotFoundException {
+        return carMapper.mapToCarDto(carDbService.getByVinNumber(vin)
                 .orElseThrow(() -> new CarNotFoundException("Not found car with this vin")));
     }
 }
