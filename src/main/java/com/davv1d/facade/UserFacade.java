@@ -1,13 +1,11 @@
 package com.davv1d.facade;
 
-import com.davv1d.domain.user.login.SingUpDto;
-import com.davv1d.domain.user.login.LoginRequest;
-import com.davv1d.domain.user.login.LoginRequestDto;
-import com.davv1d.domain.user.login.LoginResponseDto;
+import com.davv1d.domain.user.login.*;
 import com.davv1d.mapper.login.SingUpMapper;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.security.JwtProvider;
 import com.davv1d.service.db.UserDbService;
+import com.davv1d.service.db.UserLoginDbService;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class UserFacade {
@@ -38,6 +38,9 @@ public class UserFacade {
     @Autowired
     private SingUpMapper signUpMapper;
 
+    @Autowired
+    private UserLoginDbService userLoginDbService;
+
     public ResponseEntity<?> authenticateUser(LoginRequestDto loginRequestDto) {
         LoginRequest loginRequest = loginRequestMapper.mapToLoginRequest(loginRequestDto);
         Authentication authenticate = authenticationManager.authenticate(
@@ -48,6 +51,7 @@ public class UserFacade {
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String jwtToken = jwtProvider.generateJwtToken(authenticate);
+        userLoginDbService.save(new UserLogin(loginRequest.getUsername(), LocalDateTime.now()));
         return ResponseEntity.ok(new LoginResponseDto(jwtToken));
     }
 
