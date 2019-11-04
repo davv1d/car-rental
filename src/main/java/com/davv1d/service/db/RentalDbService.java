@@ -1,11 +1,9 @@
-package com.davv1d.service.rental;
+package com.davv1d.service.db;
 
 import com.davv1d.domain.user.User;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.repository.RentalRepository;
-import com.davv1d.service.UserDbService;
-import com.davv1d.service.car.CarDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +23,17 @@ public class RentalDbService {
 
     public void save(final Rental rental) {
         Optional<Car> optionalCar = carDbService.getByVinNumber(rental.getCar().getVinNumber());
-        Optional<User> optionalUser = userDbService.findUserByUsername(rental.getUser().getUsername());
+        Optional<User> optionalUser = userDbService.getUserByUsername(rental.getUser().getUsername());
         if (optionalCar.isPresent() && optionalUser.isPresent()) {
             rentalRepository.save(new Rental(optionalUser.get(), optionalCar.get(), rental.getDateOfRent(), rental.getDateOfReturn()));
         }
     }
 
-    public List<Rental> fetchRentalsByCarVinNumber(final String vinNumber) {
+    public List<Rental> getRentalsByCarVinNumber(final String vinNumber) {
         return rentalRepository.fetchRentalsByCarVinNumber(vinNumber);
     }
 
-    public List<Rental> fetchRentalsByUsername(final String username) {
+    public List<Rental> getRentalsByUsername(final String username) {
         return rentalRepository.fetchRentalsByUsername(username);
     }
 
@@ -50,7 +48,7 @@ public class RentalDbService {
         rentalRepository.deleteById(updatedRental.getId());
     }
 
-    public List<Rental> fetchAll() {
+    public List<Rental> getAll() {
         return rentalRepository.findAll();
     }
 }

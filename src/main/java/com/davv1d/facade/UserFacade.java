@@ -7,7 +7,7 @@ import com.davv1d.domain.user.login.LoginResponseDto;
 import com.davv1d.mapper.login.SingUpMapper;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.security.JwtProvider;
-import com.davv1d.service.UserDbService;
+import com.davv1d.service.db.UserDbService;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +56,5 @@ public class UserFacade {
                 .map(signUpMapper::mapToUser)
                 .flatMap(userValidator::saveUserValidate)
                 .effectHttp(userDbService::saveUser);
-//        return RoleValidator.roleValidator(userDto)
-//                .map(userMapper::mapToUser)
-//                .flatMap(userValidator::saveUserValidate)
-//                .effect(userService::saveUser);
     }
 }

@@ -1,4 +1,4 @@
-package com.davv1d.service.car;
+package com.davv1d.service.db;
 
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
@@ -41,10 +41,10 @@ public class CarDbService {
 
     public void deleteCar(String vinNumber) {
         getByVinNumber(vinNumber)
-                .ifPresent(this::delete);
+                .ifPresent(this::deleteFromDb);
     }
 
-    private void delete(final Car car) {
+    private void deleteFromDb(final Car car) {
         car.getModel().getCars().remove(car);
         Car updatedCar = new Car(car.getId(), car.getVinNumber(),null, null, car.isAvailability());
         carRepository.save(updatedCar);

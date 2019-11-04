@@ -5,7 +5,7 @@ import com.davv1d.domain.user.UserDto;
 import com.davv1d.errors.UsernameNotFoundException;
 import com.davv1d.mapper.user.EmailUpdaterMapper;
 import com.davv1d.mapper.user.UserMapper;
-import com.davv1d.service.UserDbService;
+import com.davv1d.service.db.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +26,12 @@ public class UserController {
 
     @GetMapping("/users")
     public List<UserDto> getAll() {
-        return userMapper.mapToUserDtoList(userDbService.fetchAll());
+        return userMapper.mapToUserDtoList(userDbService.getAll());
     }
 
     @GetMapping(value = "/users/{username}")
     public UserDto getUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
-        return userMapper.mapToUserDto(userDbService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found name " + username)));
+        return userMapper.mapToUserDto(userDbService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found name " + username)));
     }
 
     @DeleteMapping("/users")

@@ -1,8 +1,8 @@
 package com.davv1d.repository;
 
-import com.davv1d.service.UserDbService;
-import com.davv1d.service.car.CarDbService;
-import com.davv1d.service.rental.RentalDbService;
+import com.davv1d.service.db.UserDbService;
+import com.davv1d.service.db.CarDbService;
+import com.davv1d.service.db.RentalDbService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

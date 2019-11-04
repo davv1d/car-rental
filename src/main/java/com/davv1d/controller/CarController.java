@@ -3,9 +3,9 @@ package com.davv1d.controller;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.errors.CarNotFoundException;
 import com.davv1d.mapper.car.CarMapper;
-import com.davv1d.service.car.BrandDbService;
-import com.davv1d.service.car.CarDbService;
-import com.davv1d.service.car.ModelDbService;
+import com.davv1d.service.db.BrandDbService;
+import com.davv1d.service.db.CarDbService;
+import com.davv1d.service.db.ModelDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

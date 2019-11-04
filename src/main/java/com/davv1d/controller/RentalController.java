@@ -2,7 +2,7 @@ package com.davv1d.controller;
 
 import com.davv1d.domain.rental.RentalDto;
 import com.davv1d.mapper.rental.RentalMapper;
-import com.davv1d.service.rental.RentalDbService;
+import com.davv1d.service.db.RentalDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,17 +19,17 @@ public class RentalController {
 
     @GetMapping("/fetch")
     public List<RentalDto> getRentals() {
-        return rentalMapper.mapToRentalDtoList(rentalDbService.fetchAll());
+        return rentalMapper.mapToRentalDtoList(rentalDbService.getAll());
     }
 
     @GetMapping("/fetch/{vin}")
     public List<RentalDto> getRentalsByCarVinNumber(@PathVariable String vin) {
-        return rentalMapper.mapToRentalDtoList(rentalDbService.fetchRentalsByCarVinNumber(vin));
+        return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByCarVinNumber(vin));
     }
 
     @GetMapping("/fetch/{username}")
     public List<RentalDto> getRentalsByUsername(@PathVariable String username) {
-        return rentalMapper.mapToRentalDtoList(rentalDbService.fetchRentalsByUsername(username));
+        return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByUsername(username));
     }
 
     @DeleteMapping("/delete/{id}")

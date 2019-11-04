@@ -1,4 +1,4 @@
-package com.davv1d.service.weather.empty;
+package com.davv1d.externalApi.weather;
 
 import com.davv1d.domain.weather.*;
 import org.springframework.stereotype.Component;

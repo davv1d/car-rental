@@ -1,9 +1,9 @@
 package com.davv1d.controller;
 
 import com.davv1d.domain.weather.CityWeathers;
-import com.davv1d.service.weather.Converter.CityWeatherConverter;
+import com.davv1d.mapper.weather.CityWeatherConverter;
 import com.davv1d.domain.weather.CityForecast;
-import com.davv1d.service.weather.empty.EmptyWeathersClass;
+import com.davv1d.externalApi.weather.EmptyWeathersClass;
 import com.davv1d.externalApi.weather.WeatherClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

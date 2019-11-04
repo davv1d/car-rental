@@ -1,4 +1,4 @@
-package com.davv1d.service;
+package com.davv1d.service.db;
 
 import com.davv1d.domain.user.EmailUpdater;
 import com.davv1d.domain.user.User;
@@ -18,11 +18,11 @@ public class UserDbService {
         return userRepository.save(user).getUsername();
     }
 
-    public Optional<User> findUserByUsername(final String username) {
+    public Optional<User> getUserByUsername(final String username) {
         return userRepository.findByUsername(username);
     }
 
-    public List<User> fetchAll() {
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
@@ -43,9 +43,5 @@ public class UserDbService {
                             foundUser.getRentals());
                     userRepository.save(updatedUser);
                 });
-    }
-
-    public boolean existsByUsername(final String username) {
-        return userRepository.existsByUsername(username);
     }
 }

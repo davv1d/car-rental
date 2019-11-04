@@ -1,4 +1,4 @@
-package com.davv1d.service.car;
+package com.davv1d.service.db;
 
 import com.davv1d.domain.car.Brand;
 import com.davv1d.repository.BrandRepository;
@@ -14,7 +14,7 @@ public class BrandDbService {
     private BrandRepository brandRepository;
 
     public Brand saveBrandIfItDoesNotExist(final String name) {
-        return fetchByName(name)
+        return getBrandByName(name)
                 .orElseGet(() -> save(name));
     }
 
@@ -22,11 +22,11 @@ public class BrandDbService {
         return brandRepository.save(new Brand(name));
     }
 
-    private Optional<Brand> fetchByName(String name) {
+    private Optional<Brand> getBrandByName(String name) {
         return brandRepository.findByName(name.toUpperCase());
     }
 
-    public List<Brand> fetchAllBrands() {
+    public List<Brand> getBrands() {
         return brandRepository.findAll();
     }
 

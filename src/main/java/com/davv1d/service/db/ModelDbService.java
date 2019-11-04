@@ -1,4 +1,4 @@
-package com.davv1d.service.car;
+package com.davv1d.service.db;
 
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Model;
@@ -17,7 +17,7 @@ public class ModelDbService {
     private BrandDbService brandDbService;
 
     public Model saveModelIfItDoesNotExist(final String modelName, final String brandName) {
-        return fetchByName(modelName)
+        return getByName(modelName)
                 .orElseGet(() -> save(modelName, brandName));
     }
 
@@ -26,12 +26,12 @@ public class ModelDbService {
         return modelRepository.save(new Model(modelName, brand));
     }
 
-    private Optional<Model> fetchByName(String name) {
+    private Optional<Model> getByName(String name) {
         return modelRepository.findByName(name.toUpperCase());
     }
 
     public void deleteByName(String modelName) {
-        fetchByName(modelName)
+        getByName(modelName)
                 .ifPresent(model -> {
                     model.getBrand().getModels().remove(model);
                     Model updatedModel = new Model(model.getId(), model.getName(), null, model.getCars());

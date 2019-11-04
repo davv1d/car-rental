@@ -1,4 +1,4 @@
-package com.davv1d.service.weather.Converter;
+package com.davv1d.mapper.weather;
 
 import com.davv1d.domain.weather.MainWeatherProp;
 import org.springframework.stereotype.Component;
