@@ -74,7 +74,7 @@ public class CarController {
         return carMapper.mapToCarDtoList(carDbService.getAvailabilityCars(dateOfRent, dateOfReturn));
     }
 
-    @GetMapping("/fetchCar/{vin}")
+    @GetMapping("/getCar/{vin}")
     public CarDto getCarByVin(@PathVariable String vin) throws CarNotFoundException {
         return carMapper.mapToCarDto(carDbService.getByVinNumber(vin)
                 .orElseThrow(() -> new CarNotFoundException("Not found car with this vin")));
