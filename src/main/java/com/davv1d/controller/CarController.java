@@ -9,7 +9,6 @@ import com.davv1d.service.db.BrandDbService;
 import com.davv1d.service.db.CarDbService;
 import com.davv1d.service.db.ModelDbService;
 import com.davv1d.service.db.RepairStatsDbService;
-import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,28 +53,30 @@ public class CarController {
         }
     }
 
-    @DeleteMapping("/delete/{vin}")
-    public void deleteCar(@PathVariable String vin) {
+    @DeleteMapping("/delete")
+    public void deleteCar(@RequestParam String vin) {
         carDbService.deleteCar(vin);
     }
 
-    @DeleteMapping("/brand/{name}")
-    public void deleteBrand(@PathVariable String name) {
+    @DeleteMapping("/brand")
+    public void deleteBrand(@RequestParam String name) {
         brandDbService.deleteBrand(name);
     }
 
-    @DeleteMapping("/model/{name}")
-    public void deleteModel(@PathVariable String name) {
+    @DeleteMapping("/model")
+    public void deleteModel(@RequestParam String name) {
         modelDbService.deleteByName(name);
     }
 
     @GetMapping("/availability")
-    public List<CarDto> getAvailabilityCars(@RequestParam LocalDateTime dateOfRent, @RequestParam LocalDateTime dateOfReturn) {
-        return carMapper.mapToCarDtoList(carDbService.getAvailabilityCars(dateOfRent, dateOfReturn));
+    public List<CarDto> getAvailabilityCars(@RequestParam String dateOfRent, @RequestParam String dateOfReturn) {
+        LocalDateTime dateOfRentLocal = LocalDateTime.parse(dateOfRent);
+        LocalDateTime dateOfReturnLocal = LocalDateTime.parse(dateOfReturn);
+        return carMapper.mapToCarDtoList(carDbService.getAvailabilityCars(dateOfRentLocal, dateOfReturnLocal));
     }
 
-    @GetMapping("/getCar/{vin}")
-    public CarDto getCarByVin(@PathVariable String vin) throws CarNotFoundException {
+    @GetMapping("/getCar")
+    public CarDto getCarByVin(@RequestParam String vin) throws CarNotFoundException {
         return carMapper.mapToCarDto(carDbService.getByVinNumber(vin)
                 .orElseThrow(() -> new CarNotFoundException("Not found car with this vin")));
     }

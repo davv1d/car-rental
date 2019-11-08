@@ -1,6 +1,5 @@
 package com.davv1d.domain.car;
 
-import com.davv1d.domain.rental.Rental;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @NamedNativeQuery(
         name = "Car.fetchAvailabilityCars",
@@ -54,6 +51,10 @@ public class Car {
         this.brand = brand;
         this.model = model;
         this.availability = availability;
+    }
+
+    public Car(@NotNull String vinNumber) {
+        this.vinNumber = vinNumber;
     }
 
     @Override

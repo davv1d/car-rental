@@ -1,6 +1,5 @@
 package com.davv1d.domain.car.dto;
 
-import com.davv1d.domain.car.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

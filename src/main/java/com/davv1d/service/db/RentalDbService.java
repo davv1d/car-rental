@@ -1,8 +1,8 @@
 package com.davv1d.service.db;
 
-import com.davv1d.domain.user.User;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.rental.Rental;
+import com.davv1d.domain.user.User;
 import com.davv1d.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

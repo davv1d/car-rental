@@ -1,7 +1,8 @@
 package com.davv1d.controller;
 
-import com.davv1d.domain.nbp.ExchangeRate;
+import com.davv1d.domain.nbp.Rates;
 import com.davv1d.externalApi.nbp.NbpClient;
+import com.davv1d.mapper.nbp.NbpMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,11 @@ public class NbpCurrencyRatesController {
     @Autowired
     private NbpClient nbpClient;
 
+    @Autowired
+    private NbpMapper nbpMapper;
+
     @GetMapping("/rates")
-    public List<ExchangeRate> getRates() {
-        return nbpClient.getExchangeRates();
+    public List<Rates> getRates() {
+        return nbpMapper.mapToRatesList(nbpClient.getExchangeRates());
     }
 }

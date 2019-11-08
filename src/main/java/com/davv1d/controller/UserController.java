@@ -24,17 +24,17 @@ public class UserController {
     @Autowired
     private EmailUpdaterMapper emailUpdaterMapper;
 
-    @GetMapping("/users")
+    @GetMapping(value = "/users")
     public List<UserDto> getAll() {
         return userMapper.mapToUserDtoList(userDbService.getAll());
     }
 
-    @GetMapping(value = "/users/{username}")
-    public UserDto getUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
+    @GetMapping(value = "/users", params = "username")
+    public UserDto getUserByUsername(@RequestParam String username) throws UsernameNotFoundException {
         return userMapper.mapToUserDto(userDbService.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found name " + username)));
     }
 
-    @DeleteMapping("/users")
+    @DeleteMapping(value = "/users", params = "username")
     public void deleteUser(@RequestParam String username) {
         userDbService.deleteByUsername(username);
     }

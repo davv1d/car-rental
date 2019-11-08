@@ -1,7 +1,7 @@
 package com.davv1d.domain.rental;
 
-import com.davv1d.domain.user.User;
 import com.davv1d.domain.car.Car;
+import com.davv1d.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

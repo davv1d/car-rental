@@ -1,7 +1,7 @@
 package com.davv1d.controller;
 
-import com.davv1d.domain.user.login.SingUpDto;
 import com.davv1d.domain.user.login.LoginRequestDto;
+import com.davv1d.domain.user.login.SingUpDto;
 import com.davv1d.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

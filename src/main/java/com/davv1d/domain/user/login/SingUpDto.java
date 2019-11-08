@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class SingUpDto {
-    private Long id;
     private String username;
     private String password;
     private String email;

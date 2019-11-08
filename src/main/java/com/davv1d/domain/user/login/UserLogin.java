@@ -1,6 +1,5 @@
 package com.davv1d.domain.user.login;
 
-import com.davv1d.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
