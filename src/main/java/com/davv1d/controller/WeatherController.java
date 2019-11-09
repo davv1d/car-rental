@@ -6,9 +6,11 @@ import com.davv1d.domain.weather.WeatherDto;
 import com.davv1d.externalApi.weather.WeatherClient;
 import com.davv1d.mapper.weather.CityWeatherConverter;
 import com.davv1d.mapper.weather.WeatherMapper;
+import com.davv1d.service.EmptyValuesClassCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,7 @@ public class WeatherController {
         if (optionalCityWeathers.isPresent()) {
             return weatherMapper.mapToToWeatherDto(cityWeatherConverter.convertTempAndWindInCityWeathers(optionalCityWeathers.get()));
         } else {
-            return null;
+            return EmptyValuesClassCreator.emptyWeatherDto();
         }
     }
 
@@ -41,7 +43,7 @@ public class WeatherController {
         if (optionalCityForecast.isPresent()) {
             return weatherMapper.mapToListWeatherDto(cityWeatherConverter.convertTempAndWindInCityForecast(optionalCityForecast.get()));
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
