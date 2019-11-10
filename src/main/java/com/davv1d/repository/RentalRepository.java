@@ -31,6 +31,4 @@ public interface RentalRepository extends CrudRepository<Rental, Long> {
 
     @Query(nativeQuery = true)
     List<Rental> fetchRentalsByUsername(@Param("USERNAME") String username);
-
-
 }
