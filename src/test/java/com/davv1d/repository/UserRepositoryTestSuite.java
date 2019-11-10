@@ -49,19 +49,6 @@ public class UserRepositoryTestSuite {
     }
 
     @Test
-    public void shouldFetchUserById() {
-        //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
-        userRepository.save(user);
-        //When
-        Optional<User> optionalPatient = userRepository.findById(user.getId());
-        //Then
-        assertTrue(optionalPatient.isPresent());
-        //Clean Up
-        userRepository.deleteById(user.getId());
-    }
-
-    @Test
     public void shouldFetchUserByUsername() {
         //Given
         User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
@@ -98,5 +85,19 @@ public class UserRepositoryTestSuite {
         assertTrue(exist);
         //Clean Up
         userRepository.deleteById(user.getId());
+    }
+
+    @Test
+    public void shouldDeleteUserByUsername() {
+        //Given
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        User savedUser = userRepository.save(user);
+        //When
+        userRepository.deleteByUsername(savedUser.getUsername());
+        //Then
+        Optional<User> optionalUser = userRepository.findByUsername(savedUser.getUsername());
+        assertFalse(optionalUser.isPresent());
+        //Clean Up
+//        userRepository.deleteById(user.getId());
     }
 }
