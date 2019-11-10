@@ -3,15 +3,15 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
-import com.davv1d.functional.Result;
 import com.davv1d.repository.CarRepository;
-import com.davv1d.service.validate.ExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static com.davv1d.service.validate.ExistValidator.*;
 
 @Service
 public class CarDbService {
@@ -24,11 +24,8 @@ public class CarDbService {
     @Autowired
     private ModelDbService modelDbService;
 
-    @Autowired
-    private ExistValidator existValidator;
-
     public Car saveCarIfItDoesNotExist(final Car car) {
-        return existValidator.checkExist(car.getVinNumber(), this::getByVinNumber)
+        return checkExist(car.getVinNumber(), this::getByVinNumber)
                 .getOrElse(() -> save(car));
     }
 
@@ -45,7 +42,7 @@ public class CarDbService {
     }
 
     public boolean deleteCar(String vinNumber) {
-        return existValidator.checkExist(vinNumber, this::getByVinNumber)
+        return checkExist(vinNumber, this::getByVinNumber)
                 .effect(this::deleteFromDb);
     }
 
@@ -57,7 +54,7 @@ public class CarDbService {
     }
 
     public boolean changeAvailability(final Car car) {
-        return existValidator.checkExist(car.getVinNumber(), this::getByVinNumber)
+        return checkExist(car.getVinNumber(), this::getByVinNumber)
                 .effect(car1 -> {
                     Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
                     carRepository.save(updatedCar);
