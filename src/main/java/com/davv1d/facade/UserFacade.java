@@ -1,6 +1,8 @@
 package com.davv1d.facade;
 
+import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.login.*;
+import com.davv1d.functional.Result;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.mapper.login.SingUpMapper;
 import com.davv1d.security.JwtProvider;
@@ -9,6 +11,7 @@ import com.davv1d.service.db.UserLoginDbService;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,9 +63,13 @@ public class UserFacade {
     }
 
     public ResponseEntity<?> registerUser(SingUpDto singUpDto) {
-        return RoleValidator.roleValidator(singUpDto)
-                .map(signUpMapper::mapToUser)
-                .flatMap(userValidator::saveUserValidate)
-                .effectHttp(userDbService::saveUser);
+        String role = singUpDto.getRole();
+        if (RoleValidator.isRoleExist(role)) {
+            User user = signUpMapper.mapToUser(singUpDto);
+            return userValidator.saveUserValidate(user)
+                    .effectHttp(userDbService::saveUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect role");
+        }
     }
 }
