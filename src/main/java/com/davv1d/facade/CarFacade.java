@@ -6,7 +6,7 @@ import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.service.EmptyValuesClassCreator;
 import com.davv1d.service.db.BrandDbService;
-import com.davv1d.service.db.CarDbService;
+import com.davv1d.service.db.CarDetailServiceService;
 import com.davv1d.service.db.ModelDbService;
 import com.davv1d.service.db.RepairStatsDbService;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class CarFacade {
     private CarMapper carMapper;
 
     @Autowired
-    private CarDbService carDbService;
+    private CarDetailServiceService carDetailService;
 
     @Autowired
     private BrandDbService brandDbService;
@@ -39,32 +39,32 @@ public class CarFacade {
     private RepairStatsDbService repairStatsDbService;
 
     public List<CarDto> getAllCars() {
-        return carMapper.mapToCarDtoList(carDbService.getCars());
+        return carMapper.mapToCarDtoList(carDetailService.getCars());
     }
 
     public void createCar(CarDto carDto) {
-        carDbService.saveCarIfItDoesNotExist(carMapper.mapToCar(carDto));
+        carDetailService.saveCarIfItDoesNotExist(carMapper.mapToCar(carDto));
     }
 
     public void setAvailability(CarDto carDto, Principal principal) {
         Car car = carMapper.mapToCar(carDto);
-        if (carDbService.changeAvailability(car)) {
+        if (carDetailService.changeAvailability(car)) {
             repairStatsDbService.save(new RepairStats(principal.getName(), car.getVinNumber(), LocalDateTime.now(), car.isAvailability()));
         }
     }
 
     public void deleteCarByVin(String vin) {
-        carDbService.deleteCar(vin);
+        carDetailService.deleteByVinNumber(vin);
     }
 
     public List<CarDto> getAvailabilityCars(String dateOfRent, String dateOfReturn) {
         LocalDateTime dateOfRentLocal = LocalDateTime.parse(dateOfRent);
         LocalDateTime dateOfReturnLocal = LocalDateTime.parse(dateOfReturn);
-        return carMapper.mapToCarDtoList(carDbService.getAvailabilityCars(dateOfRentLocal, dateOfReturnLocal));
+        return carMapper.mapToCarDtoList(carDetailService.getAvailabilityCars(dateOfRentLocal, dateOfReturnLocal));
     }
 
     public CarDto getCarByVin(String vin) {
-        Optional<Car> optionalCar = carDbService.getByVinNumber(vin);
+        Optional<Car> optionalCar = carDetailService.getByVinNumber(vin);
         if (optionalCar.isPresent()) {
             return carMapper.mapToCarDto(optionalCar.get());
         } else {

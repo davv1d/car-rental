@@ -5,16 +5,12 @@ import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
 import com.davv1d.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.davv1d.service.validate.ExistValidator.*;
-
-@Service
-public class CarDbService {
+public abstract class CarDbService {
     @Autowired
     private CarRepository carRepository;
 
@@ -24,11 +20,6 @@ public class CarDbService {
     @Autowired
     private ModelDbService modelDbService;
 
-    public Car saveCarIfItDoesNotExist(final Car car) {
-        return checkExist(car.getVinNumber(), this::getByVinNumber)
-                .getOrElse(() -> save(car));
-    }
-
     public Car save(final Car car) {
         String brandName = car.getBrand().getName();
         String modelName = car.getModel().getName();
@@ -37,28 +28,21 @@ public class CarDbService {
         return carRepository.save(new Car(car.getVinNumber(), brand, model, car.isAvailability()));
     }
 
-    public Optional<Car> getByVinNumber(final String vinNumber) {
-        return carRepository.findByVinNumber(vinNumber.toUpperCase());
-    }
-
-    public boolean deleteCar(String vinNumber) {
-        return checkExist(vinNumber, this::getByVinNumber)
-                .effect(this::deleteFromDb);
-    }
-
-    private void deleteFromDb(final Car car) {
+    public void deleteCar(final Car car) {
         car.getModel().getCars().remove(car);
         Car updatedCar = new Car(car.getId(), car.getVinNumber(), null, null, car.isAvailability());
         carRepository.save(updatedCar);
         carRepository.deleteById(car.getId());
     }
 
-    public boolean changeAvailability(final Car car) {
-        return checkExist(car.getVinNumber(), this::getByVinNumber)
-                .effect(car1 -> {
-                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
-                    carRepository.save(updatedCar);
-                });
+
+    public void updateCar(Car car) {
+        Car updatedCar = new Car(car.getId(), car.getVinNumber(), car.getBrand(), car.getModel(), car.isAvailability());
+        carRepository.save(updatedCar);
+    }
+
+    public Optional<Car> getByVinNumber(final String vinNumber) {
+        return carRepository.findByVinNumber(vinNumber.toUpperCase());
     }
 
     public List<Car> getCars() {
