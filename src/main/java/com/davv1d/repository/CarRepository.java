@@ -19,9 +19,6 @@ public interface CarRepository extends CrudRepository<Car, Long> {
     Car save(Car car);
 
     @Override
-    Optional<Car> findById(Long carId);
-
-    @Override
     List<Car> findAll();
 
     Optional<Car> findByVinNumber(String vinNumber);

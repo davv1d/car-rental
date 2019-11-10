@@ -15,4 +15,5 @@ public class SaveRentalDto {
     private String vin;
     private LocalDateTime dateOfRent;
     private LocalDateTime dateOfReturn;
+
 }
