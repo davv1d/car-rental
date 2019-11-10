@@ -3,7 +3,6 @@ package com.davv1d.facade;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.RepairStats;
 import com.davv1d.domain.car.dto.CarDto;
-import com.davv1d.errors.CarNotFoundException;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.service.EmptyValuesClassCreator;
 import com.davv1d.service.db.BrandDbService;

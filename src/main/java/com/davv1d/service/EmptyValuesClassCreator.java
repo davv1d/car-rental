@@ -1,6 +1,7 @@
 package com.davv1d.service;
 
 import com.davv1d.domain.car.dto.CarDto;
+import com.davv1d.domain.user.UserDto;
 import com.davv1d.domain.weather.WeatherDto;
 
 import java.math.BigDecimal;
@@ -26,6 +27,14 @@ public class EmptyValuesClassCreator {
                 "",
                 "",
                 false
+        );
+    }
+
+    public static UserDto emptyUserDto() {
+        return new UserDto(
+                "",
+                "",
+                ""
         );
     }
 }

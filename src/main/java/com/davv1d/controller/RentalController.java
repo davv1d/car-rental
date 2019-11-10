@@ -1,5 +1,6 @@
 package com.davv1d.controller;
 
+import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.rental.RentalDto;
 import com.davv1d.domain.rental.SaveRentalDto;
 import com.davv1d.mapper.rental.RentalMapper;
@@ -34,13 +35,19 @@ public class RentalController {
         return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByUsername(username));
     }
 
+    @GetMapping(value = "/rental/user")
+    public List<RentalDto> getLoggedUserRentals(Principal principal) {
+        return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByUsername(principal.getName()));
+    }
+
     @DeleteMapping(value = "/rental/", params = "id")
     public void deleteRentalsById(@RequestParam long id) {
         rentalDbService.deleteById(id);
     }
 
-    @PostMapping("/rental")
+    @PostMapping("/rental/create")
     public void createRental(@RequestBody SaveRentalDto rentalDto, Principal principal) {
-        rentalDbService.save(rentalMapper.mapToRental(rentalDto));
+        Rental rental = rentalMapper.mapToRental(rentalDto, principal.getName());
+        rentalDbService.save(rental);
     }
 }

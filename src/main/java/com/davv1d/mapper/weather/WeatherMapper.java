@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class WeatherMapper {
-    public WeatherDto mapToToWeatherDto(CityWeathers cityWeathers) {
+    public WeatherDto mapToWeatherDto(CityWeathers cityWeathers) {
         return new WeatherDto(
                 new Date(Long.parseLong(cityWeathers.getDate()) * 1000).toString(),
                 cityWeathers.getClouds().getPercentageCloudy(),
@@ -36,7 +36,7 @@ public class WeatherMapper {
     public List<WeatherDto> mapToListWeatherDto(CityForecast cityForecast) {
         return cityForecast.getCityWeathers().stream()
                 .flatMap(cityWeathers -> cityForecast.getCityWeathers().stream())
-                .map(this::mapToToWeatherDto)
+                .map(this::mapToWeatherDto)
                 .collect(Collectors.toList());
     }
 }

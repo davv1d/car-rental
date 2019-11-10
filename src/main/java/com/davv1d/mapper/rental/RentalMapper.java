@@ -56,4 +56,13 @@ public class RentalMapper {
                 saveRentalDto.getDateOfReturn()
         );
     }
+
+    public Rental mapToRental(final SaveRentalDto saveRentalDto, String username) {
+        return new Rental(
+                new User(username),
+                new Car(saveRentalDto.getVin()),
+                saveRentalDto.getDateOfRent(),
+                saveRentalDto.getDateOfReturn()
+        );
+    }
 }
