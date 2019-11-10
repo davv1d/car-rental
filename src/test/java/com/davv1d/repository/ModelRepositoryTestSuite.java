@@ -34,6 +34,8 @@ public class ModelRepositoryTestSuite {
         //Then
         Optional<Model> optionalModel = modelRepository.findById(testModel.getId());
         assertTrue(optionalModel.isPresent());
+        assertEquals(brand.getName(), optionalModel.get().getBrand().getName());
+        assertTrue(optionalModel.get().getCars().isEmpty());
         //Clean up
         brandRepository.deleteByName(savedBrand.getName());
     }

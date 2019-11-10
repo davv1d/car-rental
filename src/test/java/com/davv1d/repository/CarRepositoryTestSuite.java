@@ -52,7 +52,6 @@ public class CarRepositoryTestSuite {
         carRepository.save(car2);
         LocalDateTime dateOfRent = LocalDateTime.now().plusDays(1);
         LocalDateTime dateOfReturn = dateOfRent.plusDays(3);
-
         LocalDateTime dateOfRent2 = LocalDateTime.now().plusDays(10);
         LocalDateTime dateOfReturn2 = dateOfRent.plusDays(13);
         Rental rental1 = new Rental(saveUser, savedCar1, dateOfRent, dateOfReturn);
@@ -67,20 +66,18 @@ public class CarRepositoryTestSuite {
         } finally {
             //Clean up
             Optional<Rental> savedRental = rentalRepository.findById(rental1.getId());
-            savedRental.ifPresent(rental -> {
-                Rental updatedRental = new Rental(rental.getId(), null, null, rental.getDateOfRent(), rental.getDateOfReturn());
-                rentalRepository.save(updatedRental);
-                rentalRepository.deleteById(updatedRental.getId());
-            });
+            savedRental.ifPresent(this::deleteRental);
             Optional<Rental> savedRental2 = rentalRepository.findById(rental2.getId());
-            savedRental2.ifPresent(rental -> {
-                Rental updatedRental = new Rental(rental.getId(), null, null, rental.getDateOfRent(), rental.getDateOfReturn());
-                rentalRepository.save(updatedRental);
-                rentalRepository.deleteById(updatedRental.getId());
-            });
+            savedRental2.ifPresent(this::deleteRental);
             userRepository.deleteByUsername(saveUser.getUsername());
             brandRepository.deleteByName(savedBrand.getName());
         }
+    }
+
+    private void deleteRental(Rental rental) {
+        Rental updatedRental = new Rental(rental.getId(), null, null, rental.getDateOfRent(), rental.getDateOfReturn());
+        rentalRepository.save(updatedRental);
+        rentalRepository.deleteById(updatedRental.getId());
     }
 
     @Test
@@ -122,6 +119,7 @@ public class CarRepositoryTestSuite {
             assertEquals("TEST AUDI", carById.get().getBrand().getName());
             assertEquals("TEST A6", carById.get().getModel().getName());
             assertEquals("TESTVIN1", carById.get().getVinNumber());
+            assertEquals("TEST AUDI", carById.get().getBrand().getName());
             assertTrue(carById.get().isAvailability());
         } finally {
             //Clean up
