@@ -42,7 +42,7 @@ public class UserRepositoryTestSuite {
         //When
         List<User> users = userRepository.findAll();
         //Then
-        assertEquals(2, users.size());
+        assertEquals(5, users.size());
         //Clean Up
         userRepository.deleteById(user.getId());
         userRepository.deleteById(admin.getId());

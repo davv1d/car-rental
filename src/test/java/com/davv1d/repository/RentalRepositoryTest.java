@@ -1,11 +1,12 @@
 package com.davv1d.repository;
 
+import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
+import com.davv1d.domain.car.Model;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.user.User;
-import com.davv1d.service.db.UserDbService;
-import com.davv1d.service.db.CarDbService;
-import com.davv1d.service.db.RentalDbService;
+import com.davv1d.domain.user.role.Role;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,53 +14,69 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RentalRepositoryTest {
+    private User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+    private Brand brand = new Brand("test audi");
+    private Model model = new Model("test A6", brand);
     @Autowired
     private RentalRepository rentalRepository;
 
     @Autowired
-    private UserDbService userDbService;
+    private CarRepository carRepository;
 
     @Autowired
-    private CarDbService carDbService;
+    private BrandRepository brandRepository;
+
+    @Autowired
+    private ModelRepository modelRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RentalDbService rentalDbService;
-
     @Test
-    public void test() {
-//        User user = new User("username", "password", "email", Role.ROLE_CLIENT);
-//        userService.saveUser(user);
-//        User user = userRepository.findByUsername("john vaadin").get();
-//        Brand volvo = new Brand("Volvo");
-//        Model v50 = new Model("v60", volvo);
-//        Car car1 = new Car("VIN TEST 7", volvo, v50, false);
-//        carDbService.saveCarIfItDoesNotExist(car1);
-//        Car car1 = carRepository.findById(29L).get();
-//        Date date = new Date();
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//        Car vin_vaadin = carDbService.getByVinNumber("VIN VADIN").get();
-//        LocalDateTime localDateTime = LocalDateTime.now();
-//        System.out.println(localDateTime);
-//        Rental rental = new Rental(user, vin_vaadin, LocalDateTime.now(), LocalDateTime.now().plusHours(10));
-//        rentalRepository.save(rental);
-//        LocalDateTime dateOfRent = LocalDateTime.now().minusDays(5);
-//        LocalDateTime dateOfReturn  = LocalDateTime.now().plusDays(1);
-//        List<Car> cars = carDbService.fetchAvailabilityCars(dateOfRent, dateOfReturn);
-//        assertEquals(7, cars.size());
-//        System.out.println(cars);
-//        Optional<Rental> rentals = rentalRepository.fetchRentalsByCarVinNumber("VIN TEST 1");
-//        assertTrue(rentals.isPresent());
-//        List<Rental> username = rentalRepository.fetchRentalsByUsername("username");
-//        System.out.println(username);
-//        assertNotEquals(0, username.size());
-//        rentalRepository.deleteById(32L);
-//        rentalDbService.deleteById(32L);
+    public void shouldGetAllRentals() {
+        //Given
+        User saveUser = userRepository.save(user);
+        Brand savedBrand = brandRepository.save(brand);
+        Model savedModel = modelRepository.save(model);
+        Car car1 = new Car("testvin1", savedBrand, savedModel, true);
+        Car car2 = new Car("testvin2", savedBrand, savedModel, true);
+        Car savedCar1 = carRepository.save(car1);
+        carRepository.save(car2);
+        LocalDateTime dateOfRent = LocalDateTime.now().plusDays(1);
+        LocalDateTime dateOfReturn = dateOfRent.plusDays(3);
+        LocalDateTime dateOfRent2 = LocalDateTime.now().plusDays(10);
+        LocalDateTime dateOfReturn2 = dateOfRent.plusDays(13);
+        Rental rental1 = new Rental(saveUser, savedCar1, dateOfRent, dateOfReturn);
+        Rental rental2 = new Rental(saveUser, savedCar1, dateOfRent2, dateOfReturn2);
+        rentalRepository.save(rental1);
+        rentalRepository.save(rental2);
+        //When
+        List<Rental> rentals = rentalRepository.findAll();
+        //Then
+        try {
+            assertEquals(2, rentals.size());
+        } finally {
+            //Clean up
+            Optional<Rental> savedRental = rentalRepository.findById(rental1.getId());
+            savedRental.ifPresent(this::deleteRental);
+            Optional<Rental> savedRental2 = rentalRepository.findById(rental2.getId());
+            savedRental2.ifPresent(this::deleteRental);
+            userRepository.deleteByUsername(saveUser.getUsername());
+            brandRepository.deleteByName(savedBrand.getName());
+        }
+    }
+
+    private void deleteRental(Rental rental) {
+        Rental updatedRental = new Rental(rental.getId(), null, null, rental.getDateOfRent(), rental.getDateOfReturn());
+        rentalRepository.save(updatedRental);
+        rentalRepository.deleteById(updatedRental.getId());
     }
 }
