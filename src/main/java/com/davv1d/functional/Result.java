@@ -21,7 +21,7 @@ public abstract class Result<V> implements Serializable {
 
     public abstract void forEach(Consumer<V> success, Consumer<String> failure);
 
-    private static class Failure<V> extends Result<V> {
+    public static class Failure<V> extends Result<V> {
         private final String message;
 
         private Failure(String message) {
@@ -54,7 +54,7 @@ public abstract class Result<V> implements Serializable {
         }
     }
 
-    private static class Success<V> extends Result<V> {
+    public static class Success<V> extends Result<V> {
         private final V value;
 
         private Success(V value) {
