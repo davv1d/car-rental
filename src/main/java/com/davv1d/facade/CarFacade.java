@@ -48,7 +48,7 @@ public class CarFacade {
 
     public void setAvailability(CarDto carDto, Principal principal) {
         Car car = carMapper.mapToCar(carDto);
-        if (carDbService.setAvailability(car)) {
+        if (carDbService.changeAvailability(car)) {
             repairStatsDbService.save(new RepairStats(principal.getName(), car.getVinNumber(), LocalDateTime.now(), car.isAvailability()));
         }
     }

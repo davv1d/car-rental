@@ -6,14 +6,19 @@ import org.springframework.http.ResponseEntity;
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class Result<V> implements Serializable {
     private Result() {
     }
 
+    public abstract boolean isPresent();
+
     public abstract <U> ResponseEntity<?> effectHttp(Function<V, U> success);
 
-    public abstract V getOrElse(V defaultValue);
+    public abstract boolean effect(Consumer<V> c);
+
+    public abstract V getOrElse(Supplier<V> c);
 
     public abstract <U> Result<U> map(Function<V, U> f);
 
@@ -29,13 +34,23 @@ public abstract class Result<V> implements Serializable {
         }
 
         @Override
+        public boolean isPresent() {
+            return false;
+        }
+
+        @Override
         public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         @Override
-        public V getOrElse(V defaultValue) {
-            return defaultValue;
+        public boolean effect(Consumer<V> c) {
+            return false;
+        }
+
+        @Override
+        public V getOrElse(Supplier<V> c) {
+            return c.get();
         }
 
         @Override
@@ -63,12 +78,23 @@ public abstract class Result<V> implements Serializable {
         }
 
         @Override
+        public boolean isPresent() {
+            return true;
+        }
+
+        @Override
         public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
             return ResponseEntity.ok(success.apply(value));
         }
 
         @Override
-        public V getOrElse(V defaultValue) {
+        public boolean effect(Consumer<V> c) {
+            c.accept(value);
+            return true;
+        }
+
+        @Override
+        public V getOrElse(Supplier<V> c) {
             return value;
         }
 

@@ -3,7 +3,9 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
+import com.davv1d.functional.Result;
 import com.davv1d.repository.CarRepository;
+import com.davv1d.service.validate.ExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,12 @@ public class CarDbService {
     @Autowired
     private ModelDbService modelDbService;
 
+    @Autowired
+    private ExistValidator existValidator;
+
     public Car saveCarIfItDoesNotExist(final Car car) {
-        return getByVinNumber(car.getVinNumber())
-                .orElseGet(() -> save(car));
+        return existValidator.checkExist(car.getVinNumber(), this::getByVinNumber)
+                .getOrElse(() -> save(car));
     }
 
     public Car save(final Car car) {
@@ -39,26 +44,24 @@ public class CarDbService {
         return carRepository.findByVinNumber(vinNumber.toUpperCase());
     }
 
-    public void deleteCar(String vinNumber) {
-        getByVinNumber(vinNumber)
-                .ifPresent(this::deleteFromDb);
+    public boolean deleteCar(String vinNumber) {
+        return existValidator.checkExist(vinNumber, this::getByVinNumber)
+                .effect(this::deleteFromDb);
     }
 
     private void deleteFromDb(final Car car) {
         car.getModel().getCars().remove(car);
-        Car updatedCar = new Car(car.getId(), car.getVinNumber(),null, null, car.isAvailability());
+        Car updatedCar = new Car(car.getId(), car.getVinNumber(), null, null, car.isAvailability());
         carRepository.save(updatedCar);
         carRepository.deleteById(car.getId());
     }
 
-    public boolean setAvailability(final Car car) {
-        Optional<Car> optionalVin = getByVinNumber(car.getVinNumber());
-        if (optionalVin.isPresent()) {
-            Car car1 = optionalVin.get();
-            Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), car.isAvailability());
-            return carRepository.save(updatedCar) != null;
-        }
-        return false;
+    public boolean changeAvailability(final Car car) {
+        return existValidator.checkExist(car.getVinNumber(), this::getByVinNumber)
+                .effect(car1 -> {
+                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
+                    carRepository.save(updatedCar);
+                });
     }
 
     public List<Car> getCars() {
