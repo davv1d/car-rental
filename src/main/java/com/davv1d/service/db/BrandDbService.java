@@ -18,7 +18,7 @@ public class BrandDbService {
                 .orElseGet(() -> save(name));
     }
 
-    private Brand save(String name) {
+    public Brand save(String name) {
         return brandRepository.save(new Brand(name));
     }
 
