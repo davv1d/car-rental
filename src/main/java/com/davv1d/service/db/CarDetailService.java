@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import static com.davv1d.service.validate.ExistValidator.*;
 
 @Service
-public class CarDetailServiceService extends CarDbService {
+public class CarDetailService extends CarDbService {
 
     public Car saveCarIfItDoesNotExist(final Car car) {
         return checkExist(car.getVinNumber(), this::getByVinNumber)

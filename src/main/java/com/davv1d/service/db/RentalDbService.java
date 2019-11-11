@@ -16,17 +16,18 @@ public class RentalDbService {
     private RentalRepository rentalRepository;
 
     @Autowired
-    private CarDetailServiceService carDetailService;
+    private CarDetailService carDetailService;
 
     @Autowired
     private UserDbService userDbService;
 
-    public void save(final Rental rental) {
+    public Rental save(final Rental rental) {
         Optional<Car> optionalCar = carDetailService.getByVinNumber(rental.getCar().getVinNumber());
         Optional<User> optionalUser = userDbService.getUserByUsername(rental.getUser().getUsername());
         if (optionalCar.isPresent() && optionalUser.isPresent()) {
-            rentalRepository.save(new Rental(optionalUser.get(), optionalCar.get(), rental.getDateOfRent(), rental.getDateOfReturn()));
+           return rentalRepository.save(new Rental(optionalUser.get(), optionalCar.get(), rental.getDateOfRent(), rental.getDateOfReturn()));
         }
+        return rental;
     }
 
     public List<Rental> getRentalsByCarVinNumber(final String vinNumber) {

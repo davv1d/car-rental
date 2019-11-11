@@ -6,7 +6,7 @@ import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.service.EmptyValuesClassCreator;
 import com.davv1d.service.db.BrandDbService;
-import com.davv1d.service.db.CarDetailServiceService;
+import com.davv1d.service.db.CarDetailService;
 import com.davv1d.service.db.ModelDbService;
 import com.davv1d.service.db.RepairStatsDbService;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class CarFacade {
     private CarMapper carMapper;
 
     @Autowired
-    private CarDetailServiceService carDetailService;
+    private CarDetailService carDetailService;
 
     @Autowired
     private BrandDbService brandDbService;

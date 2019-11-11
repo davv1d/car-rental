@@ -87,7 +87,7 @@ public class RentalRepositoryTest {
         List<Rental> rentals = rentalRepository.findAll();
         //Then
         try {
-            assertEquals(2, rentals.size());
+            assertFalse(rentals.isEmpty());
         } finally {
             //Clean up
             cleanUp(saveUser, savedBrand, rental1, rental2);

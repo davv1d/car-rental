@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class CarDetailServiceTestSuite {
     @Autowired
-    private CarDetailServiceService carDetailService;
+    private CarDetailService carDetailService;
 
     @Autowired
     private BrandRepository brandRepository;
