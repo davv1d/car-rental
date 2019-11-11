@@ -78,6 +78,6 @@ public class CarFacade {
     }
 
     public void deleteModel(String name) {
-        modelDbService.deleteByName(name);
+        modelDbService.deleteModelByName(name);
     }
 }

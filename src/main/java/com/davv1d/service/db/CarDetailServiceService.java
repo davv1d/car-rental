@@ -7,6 +7,7 @@ import static com.davv1d.service.validate.ExistValidator.*;
 
 @Service
 public class CarDetailServiceService extends CarDbService {
+
     public Car saveCarIfItDoesNotExist(final Car car) {
         return checkExist(car.getVinNumber(), this::getByVinNumber)
                 .getOrElse(() -> save(car));
@@ -19,7 +20,9 @@ public class CarDetailServiceService extends CarDbService {
 
     public boolean changeAvailability(final Car car) {
         return checkExist(car.getVinNumber(), this::getByVinNumber)
-                .effect(car1 ->
-                    updateCar(new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability())));
+                .effect(car1 -> {
+                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
+                    updateCar(updatedCar);
+                });
     }
 }

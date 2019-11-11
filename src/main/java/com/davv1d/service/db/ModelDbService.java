@@ -3,10 +3,13 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Model;
 import com.davv1d.repository.ModelRepository;
+import com.davv1d.service.validate.ExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.davv1d.service.validate.ExistValidator.*;
 
 @Service
 public class ModelDbService {
@@ -17,8 +20,8 @@ public class ModelDbService {
     private BrandDbService brandDbService;
 
     public Model saveModelIfItDoesNotExist(final String modelName, final String brandName) {
-        return getByName(modelName)
-                .orElseGet(() -> save(modelName, brandName));
+        return checkExist(modelName, this::getByName)
+                .getOrElse(() -> save(modelName, brandName));
     }
 
     private Model save(String modelName, String brandName) {
@@ -30,13 +33,14 @@ public class ModelDbService {
         return modelRepository.findByName(name.toUpperCase());
     }
 
-    public void deleteByName(String modelName) {
-        getByName(modelName)
-                .ifPresent(model -> {
-                    model.getBrand().getModels().remove(model);
-                    Model updatedModel = new Model(model.getId(), model.getName(), null, model.getCars());
-                    modelRepository.save(updatedModel);
-                    modelRepository.deleteByName(updatedModel.getName());
-                });
+    public boolean deleteModelByName(String modelName) {
+        return checkExist(modelName, this::getByName)
+                .effect(this::deleteModel);
+    }
+
+    public void deleteModel(Model model) {
+        Model updatedModel = new Model(model.getId(), model.getName(), null, model.getCars());
+        modelRepository.save(updatedModel);
+        modelRepository.deleteByName(updatedModel.getName());
     }
 }
