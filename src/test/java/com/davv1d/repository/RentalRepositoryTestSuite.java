@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RentalRepositoryTest {
+public class RentalRepositoryTestSuite {
     private User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT.name());
     private Brand brand = new Brand("test audi");
     private Model model = new Model("test A6", brand);

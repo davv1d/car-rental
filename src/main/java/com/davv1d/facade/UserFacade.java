@@ -3,9 +3,9 @@ package com.davv1d.facade;
 import com.davv1d.domain.user.login.*;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.mapper.user.UserMapper;
+import com.davv1d.repository.UserLoginRepository;
 import com.davv1d.security.JwtProvider;
 import com.davv1d.service.db.UserDbDetailsService;
-import com.davv1d.service.db.UserLoginDbService;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,7 @@ public class UserFacade {
     private LoginRequestMapper loginRequestMapper;
 
     @Autowired
-    private UserLoginDbService userLoginDbService;
+    private UserLoginRepository userLoginRepository;
 
     public ResponseEntity<?> authenticateUser(LoginRequestDto loginRequestDto) {
         LoginRequest loginRequest = loginRequestMapper.mapToLoginRequest(loginRequestDto);
@@ -54,7 +54,7 @@ public class UserFacade {
         }
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String jwtToken = jwtProvider.generateJwtToken(authenticate);
-        userLoginDbService.save(new UserLogin(loginRequest.getUsername(), LocalDateTime.now()));
+        userLoginRepository.save(new UserLogin(loginRequest.getUsername(), LocalDateTime.now()));
         return ResponseEntity.ok(new LoginResponseDto(jwtToken, auth));
     }
 
