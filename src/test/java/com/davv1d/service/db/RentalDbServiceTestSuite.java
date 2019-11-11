@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.davv1d.domain.user.role.Role.*;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +43,7 @@ public class RentalDbServiceTestSuite {
     @Test
     public void shouldDeleteRental() {
         //Given
-        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+        User user = new User("test name", "test password", "email@test.com", ROLE_CLIENT.name());
         User saveUser = userRepository.save(user);
         Brand brand = new Brand("test brand");
         Brand savedBrand = brandRepository.save(brand);
@@ -72,7 +73,7 @@ public class RentalDbServiceTestSuite {
     @Test
     public void shouldSaveRental() {
         //Given
-        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+        User user = new User("test name", "test password", "email@test.com", ROLE_CLIENT.name());
         User saveUser = userRepository.save(user);
         Brand brand = new Brand("test brand");
         Brand savedBrand = brandRepository.save(brand);
@@ -101,7 +102,7 @@ public class RentalDbServiceTestSuite {
     @Test
     public void shouldNotSaveRentalUsersDoesNotExist() {
         //Given
-        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+        User user = new User("test name", "test password", "email@test.com", ROLE_CLIENT.name());
         Brand brand = new Brand("test brand");
         Brand savedBrand = brandRepository.save(brand);
         Model model = new Model("test model", brand);

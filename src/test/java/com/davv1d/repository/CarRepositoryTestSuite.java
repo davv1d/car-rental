@@ -40,7 +40,7 @@ public class CarRepositoryTestSuite {
     @Test
     public void shouldFetchAvailabilityCars() {
         //Given
-        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT.name());
         User saveUser = userRepository.save(user);
         Brand brand = new Brand("test audi");
         Brand savedBrand = brandRepository.save(brand);

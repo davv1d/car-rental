@@ -2,7 +2,11 @@ package com.davv1d.service.db;
 
 import com.davv1d.domain.user.EmailUpdater;
 import com.davv1d.domain.user.User;
+import com.davv1d.domain.user.role.RoleFactory;
+import com.davv1d.functional.Result;
 import com.davv1d.repository.UserRepository;
+import com.davv1d.service.validate.RoleValidator;
+import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +18,24 @@ public class UserDbService {
     @Autowired
     private UserRepository userRepository;
 
-    public String saveUser(final User user) {
-        return userRepository.save(user).getUsername();
+    @Autowired
+    private UserValidator userValidator;
+
+    public Result<User> saveUser(final User user) {
+        return RoleValidator.test(user.getRole())
+                .map(RoleFactory::createRole)
+                .map(role -> new User(user.getUsername(), user.getPassword(), user.getEmail(), role))
+                .flatMap(userValidator::saveUserValidate)
+                .flatMap(this::save);
+    }
+
+    private Result<User> save(User user) {
+        try {
+            User save = userRepository.save(user);
+            return Result.success(save);
+        } catch (Exception e) {
+            return Result.failure(e.getMessage());
+        }
     }
 
     public Optional<User> getUserByUsername(final String username) {

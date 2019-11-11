@@ -18,6 +18,8 @@ public abstract class Result<V> implements Serializable {
 
     public abstract boolean effect(Consumer<V> c);
 
+    public abstract <U> U effect(Function<V, U> success, Function<String, U> failure);
+
     public abstract V getOrElse(Supplier<V> c);
 
     public abstract <U> Result<U> map(Function<V, U> f);
@@ -46,6 +48,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public boolean effect(Consumer<V> c) {
             return false;
+        }
+
+        @Override
+        public <U> U effect(Function<V, U> success, Function<String, U> failure) {
+            return failure.apply(message);
         }
 
         @Override
@@ -91,6 +98,11 @@ public abstract class Result<V> implements Serializable {
         public boolean effect(Consumer<V> c) {
             c.accept(value);
             return true;
+        }
+
+        @Override
+        public <U> U effect(Function<V, U> success, Function<String, U> failure) {
+            return success.apply(value);
         }
 
         @Override

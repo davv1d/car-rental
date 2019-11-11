@@ -23,7 +23,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldSaveUser() {
         //Given
-        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT);
+        User user = new User("test name", "test password", "email@test.com", Role.ROLE_CLIENT.name());
         //When
         userRepository.save(user);
         //Then
@@ -35,8 +35,8 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldFetchAllUsers() {
         //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
-        User admin = new User("test admin", "test admin", "email@admin.com", Role.ROLE_ADMIN);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT.name());
+        User admin = new User("test admin", "test admin", "email@admin.com", Role.ROLE_ADMIN.name());
         userRepository.save(user);
         userRepository.save(admin);
         //When
@@ -51,7 +51,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldFetchUserByUsername() {
         //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT.name());
         userRepository.save(user);
         //When
         Optional<User> optionalPatient = userRepository.findByUsername(user.getUsername());
@@ -64,7 +64,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldExistsByUsername() {
         //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT.name());
         userRepository.save(user);
         //When
         boolean exist = userRepository.existsByUsername(user.getUsername());
@@ -77,7 +77,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldExistsByEmail() {
         //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT.name());
         userRepository.save(user);
         //When
         boolean exist = userRepository.existsByEmail(user.getEmail());
@@ -90,7 +90,7 @@ public class UserRepositoryTestSuite {
     @Test
     public void shouldDeleteUserByUsername() {
         //Given
-        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT);
+        User user = new User("test user", "test user", "email@user.com", Role.ROLE_CLIENT.name());
         User savedUser = userRepository.save(user);
         //When
         userRepository.deleteByUsername(savedUser.getUsername());

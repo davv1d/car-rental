@@ -34,10 +34,9 @@ public class User {
     @Column(name = "email", length = 50, unique = true)
     private String email;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "role")
     @NotNull
-    private Role role;
+    private String role;
 
     @OneToMany(
             targetEntity = Rental.class,
@@ -56,7 +55,7 @@ public class User {
         this.email = email;
     }
 
-    public User(@NotNull String username, @NotNull String password, @NotNull String email, @NotNull Role role) {
+    public User(@NotNull String username, @NotNull String password, @NotNull String email, @NotNull String role) {
         this.username = username;
         this.password = password;
         this.email = email;

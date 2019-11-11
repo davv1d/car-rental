@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserValidator {
+    public static final String ERROR_EMAIL_EXIST = "USER WITH THIS EMAIL ADDRESS EXISTS";
+    public static final String ERROR_NAME_EXIST = "USER WITH THIS NAME EXISTS";
     @Autowired
     private UserRepository userRepository;
 
@@ -16,9 +18,9 @@ public class UserValidator {
             if (!doesEmailExistInDatabases(user.getEmail())) {
                 return Result.success(user);
             }
-            return Result.failure("User in this email is exist");
+            return Result.failure(ERROR_EMAIL_EXIST);
         }
-        return Result.failure("User in this name is exist");
+        return Result.failure(ERROR_NAME_EXIST);
     }
 
     private boolean doesEmailExistInDatabases(String email) {

@@ -4,11 +4,11 @@ import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.RepairStats;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.mapper.car.CarMapper;
+import com.davv1d.repository.RepairStatsRepository;
 import com.davv1d.service.EmptyValuesClassCreator;
 import com.davv1d.service.db.BrandDbService;
 import com.davv1d.service.db.CarDetailService;
 import com.davv1d.service.db.ModelDbService;
-import com.davv1d.service.db.RepairStatsDbService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class CarFacade {
     private ModelDbService modelDbService;
 
     @Autowired
-    private RepairStatsDbService repairStatsDbService;
+    private RepairStatsRepository repairStatsRepository;
 
     public List<CarDto> getAllCars() {
         return carMapper.mapToCarDtoList(carDetailService.getCars());
@@ -49,7 +49,7 @@ public class CarFacade {
     public void setAvailability(CarDto carDto, Principal principal) {
         Car car = carMapper.mapToCar(carDto);
         if (carDetailService.changeAvailability(car)) {
-            repairStatsDbService.save(new RepairStats(principal.getName(), car.getVinNumber(), LocalDateTime.now(), car.isAvailability()));
+            repairStatsRepository.save(new RepairStats(principal.getName(), car.getVinNumber(), LocalDateTime.now(), car.isAvailability()));
         }
     }
 
