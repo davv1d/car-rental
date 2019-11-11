@@ -5,6 +5,7 @@ import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.role.RoleFactory;
 import com.davv1d.functional.Result;
 import com.davv1d.repository.UserRepository;
+import com.davv1d.service.validate.ExistValidator;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserDbService {
+public class UserDbDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -50,18 +51,10 @@ public class UserDbService {
         userRepository.deleteByUsername(username);
     }
 
-    public void changeUserEmail(final EmailUpdater emailUpdater) {
-        if (!userRepository.existsByEmail(emailUpdater.getEmail()))
-        userRepository.findByUsername(emailUpdater.getUsername())
-                .ifPresent(foundUser -> {
-                    User updatedUser = new User(
-                            foundUser.getId(),
-                            foundUser.getUsername(),
-                            foundUser.getPassword(),
-                            emailUpdater.getEmail(),
-                            foundUser.getRole(),
-                            foundUser.getRentals());
-                    userRepository.save(updatedUser);
-                });
+    public Result<User> changeUserEmail(final EmailUpdater emailUpdater) {
+        return ExistValidator.ifItDoesNotExist(emailUpdater.getEmail(), userRepository::findByEmail)
+                .flatMap(s -> ExistValidator.ifExists(emailUpdater.getUsername(), userRepository::findByUsername))
+                .map(user -> new User(user.getId(), user.getUsername(), user.getPassword(), emailUpdater.getEmail(), user.getRole(), user.getRentals()))
+                .flatMap(this::save);
     }
 }

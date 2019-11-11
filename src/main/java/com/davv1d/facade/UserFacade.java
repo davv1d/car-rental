@@ -1,11 +1,10 @@
 package com.davv1d.facade;
 
-import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.login.*;
 import com.davv1d.mapper.login.LoginRequestMapper;
 import com.davv1d.mapper.user.UserMapper;
 import com.davv1d.security.JwtProvider;
-import com.davv1d.service.db.UserDbService;
+import com.davv1d.service.db.UserDbDetailsService;
 import com.davv1d.service.db.UserLoginDbService;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class UserFacade {
     private UserValidator userValidator;
 
     @Autowired
-    private UserDbService userDbService;
+    private UserDbDetailsService userDbDetailsService;
 
     @Autowired
     private UserMapper userMapper;
@@ -60,7 +59,7 @@ public class UserFacade {
     }
 
     public ResponseEntity<?> registerUser(SingUpDto singUpDto) {
-        return userDbService.saveUser(userMapper.mapToUser(singUpDto))
+        return userDbDetailsService.saveUser(userMapper.mapToUser(singUpDto))
                 .effect(user1 -> ResponseEntity.ok(user1.getUsername()), s -> ResponseEntity.badRequest().body(s));
     }
 }

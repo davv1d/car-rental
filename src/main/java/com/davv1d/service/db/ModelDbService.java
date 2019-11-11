@@ -3,7 +3,6 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Model;
 import com.davv1d.repository.ModelRepository;
-import com.davv1d.service.validate.ExistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class ModelDbService {
     private BrandDbService brandDbService;
 
     public Model saveModelIfItDoesNotExist(final String modelName, final String brandName) {
-        return checkExist(modelName, this::getByName)
+        return ifExists(modelName, this::getByName)
                 .getOrElse(() -> save(modelName, brandName));
     }
 
@@ -34,7 +33,7 @@ public class ModelDbService {
     }
 
     public boolean deleteModelByName(String modelName) {
-        return checkExist(modelName, this::getByName)
+        return ifExists(modelName, this::getByName)
                 .effect(this::deleteModel);
     }
 

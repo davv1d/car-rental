@@ -9,17 +9,17 @@ import static com.davv1d.service.validate.ExistValidator.*;
 public class CarDetailService extends CarDbService {
 
     public Car saveCarIfItDoesNotExist(final Car car) {
-        return checkExist(car.getVinNumber(), this::getByVinNumber)
+        return ifExists(car.getVinNumber(), this::getByVinNumber)
                 .getOrElse(() -> save(car));
     }
 
     public boolean deleteByVinNumber(String vinNumber) {
-        return checkExist(vinNumber, this::getByVinNumber)
+        return ifExists(vinNumber, this::getByVinNumber)
                 .effect(this::deleteCar);
     }
 
     public boolean changeAvailability(final Car car) {
-        return checkExist(car.getVinNumber(), this::getByVinNumber)
+        return ifExists(car.getVinNumber(), this::getByVinNumber)
                 .effect(car1 -> {
                     Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
                     updateCar(updatedCar);

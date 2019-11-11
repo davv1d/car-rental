@@ -1,8 +1,5 @@
 package com.davv1d.functional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -11,10 +8,7 @@ import java.util.function.Supplier;
 public abstract class Result<V> implements Serializable {
     private Result() {
     }
-
-    public abstract boolean isPresent();
-
-    public abstract <U> ResponseEntity<?> effectHttp(Function<V, U> success);
+    public abstract String getErrorMessage();
 
     public abstract boolean effect(Consumer<V> c);
 
@@ -36,13 +30,8 @@ public abstract class Result<V> implements Serializable {
         }
 
         @Override
-        public boolean isPresent() {
-            return false;
-        }
-
-        @Override
-        public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        public String getErrorMessage() {
+            return message;
         }
 
         @Override
@@ -84,14 +73,10 @@ public abstract class Result<V> implements Serializable {
             this.value = value;
         }
 
-        @Override
-        public boolean isPresent() {
-            return true;
-        }
 
         @Override
-        public <U> ResponseEntity<?> effectHttp(Function<V, U> success) {
-            return ResponseEntity.ok(success.apply(value));
+        public String getErrorMessage() {
+            return "";
         }
 
         @Override
