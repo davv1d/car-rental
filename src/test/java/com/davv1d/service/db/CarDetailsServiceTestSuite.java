@@ -3,6 +3,7 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
+import com.davv1d.functional.Result;
 import com.davv1d.repository.BrandRepository;
 import com.davv1d.repository.CarRepository;
 import com.davv1d.repository.ModelRepository;
@@ -18,9 +19,9 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CarDetailServiceTestSuite {
+public class CarDetailsServiceTestSuite {
     @Autowired
-    private CarDetailService carDetailService;
+    private CarDetailsService carDetailsService;
 
     @Autowired
     private BrandRepository brandRepository;
@@ -42,7 +43,7 @@ public class CarDetailServiceTestSuite {
         Car car2 = new Car("testvin1", savedBrand, savedModel, false);
         carRepository.save(car1);
         //When
-        Car car = carDetailService.saveCarIfItDoesNotExist(car2);
+        Car car = carDetailsService.saveCarIfItDoesNotExist(car2);
         //Then
         assertTrue(car.isAvailability());
         assertEquals("TESTVIN1", car.getVinNumber());
@@ -60,7 +61,7 @@ public class CarDetailServiceTestSuite {
         Car car1 = new Car("testvin1", savedBrand, savedModel, true);
         Optional<Car> beforeSave = carRepository.findByVinNumber("testvin1");
         //When
-        carDetailService.saveCarIfItDoesNotExist(car1);
+        carDetailsService.saveCarIfItDoesNotExist(car1);
         //Then
         Optional<Car> afterSave = carRepository.findByVinNumber("testvin1");
         assertFalse(beforeSave.isPresent());
@@ -74,7 +75,7 @@ public class CarDetailServiceTestSuite {
     public void testNotDeleteCar() {
         //Given
         //When
-        boolean result = carDetailService.deleteByVinNumber("not exist vin");
+        boolean result = carDetailsService.deleteByVinNumber("not exist vin");
         //Then
         assertFalse(result);
     }
@@ -89,7 +90,7 @@ public class CarDetailServiceTestSuite {
         Car car1 = new Car("testvin1", savedBrand, savedModel, true);
         carRepository.save(car1);
         //When
-        boolean isDeleted = carDetailService.deleteByVinNumber(car1.getVinNumber());
+        boolean isDeleted = carDetailsService.deleteByVinNumber(car1.getVinNumber());
         //Then
         Optional<Car> deletedCar = carRepository.findByVinNumber("testvin1");
         assertTrue(isDeleted);
@@ -108,10 +109,10 @@ public class CarDetailServiceTestSuite {
         Car car1 = new Car("testvin1", savedBrand, savedModel, true);
         carRepository.save(car1);
         //When
-        boolean isChanged = carDetailService.changeAvailability(car1);
+        Result<Car> carResult = carDetailsService.changeAvailability("testvin1");
         //Then
         Optional<Car> updatedCar = carRepository.findByVinNumber("testvin1");
-        assertTrue(isChanged);
+        assertEquals(Result.Success.class, carResult.getClass());
         assertTrue(updatedCar.isPresent());
         assertFalse(updatedCar.get().isAvailability());
         //Clean up

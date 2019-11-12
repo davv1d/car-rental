@@ -36,9 +36,9 @@ public abstract class CarDbService {
     }
 
 
-    public void updateCar(Car car) {
+    public Car updateCar(Car car) {
         Car updatedCar = new Car(car.getId(), car.getVinNumber(), car.getBrand(), car.getModel(), car.isAvailability());
-        carRepository.save(updatedCar);
+        return carRepository.save(updatedCar);
     }
 
     public Optional<Car> getByVinNumber(final String vinNumber) {

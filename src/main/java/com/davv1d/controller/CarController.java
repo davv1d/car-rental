@@ -3,6 +3,7 @@ package com.davv1d.controller;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.facade.CarFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,8 +27,8 @@ public class CarController {
     }
 
     @PutMapping("/availability")
-    public void setAvailability(@RequestBody CarDto carDto, Principal principal) {
-        carFacade.setAvailability(carDto, principal);
+    public void changeAvailability(@RequestBody String vinNumber, Principal principal) {
+        carFacade.changeAvailability(vinNumber, principal);
     }
 
     @DeleteMapping("/delete")
@@ -51,7 +52,7 @@ public class CarController {
     }
 
     @GetMapping("/getCar")
-    public CarDto getCarByVin(@RequestParam String vin) {
+    public ResponseEntity<?> getCarByVin(@RequestParam String vin) {
         return carFacade.getCarByVin(vin);
     }
 }

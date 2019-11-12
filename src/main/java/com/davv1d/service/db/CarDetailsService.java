@@ -1,12 +1,13 @@
 package com.davv1d.service.db;
 
 import com.davv1d.domain.car.Car;
+import com.davv1d.functional.Result;
 import org.springframework.stereotype.Service;
 
-import static com.davv1d.service.validate.ExistValidator.*;
+import static com.davv1d.service.validate.ExistenceChecker.*;
 
 @Service
-public class CarDetailService extends CarDbService {
+public class CarDetailsService extends CarDbService {
 
     public Car saveCarIfItDoesNotExist(final Car car) {
         return ifExists(car.getVinNumber(), this::getByVinNumber)
@@ -18,11 +19,9 @@ public class CarDetailService extends CarDbService {
                 .effect(this::deleteCar);
     }
 
-    public boolean changeAvailability(final Car car) {
-        return ifExists(car.getVinNumber(), this::getByVinNumber)
-                .effect(car1 -> {
-                    Car updatedCar = new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability());
-                    updateCar(updatedCar);
-                });
+    public Result<Car> changeAvailability(final String vinNumber) {
+        return ifExists(vinNumber, this::getByVinNumber)
+                .map(car1 -> new Car(car1.getId(), car1.getVinNumber(), car1.getBrand(), car1.getModel(), !car1.isAvailability()))
+                .map(this::updateCar);
     }
 }
