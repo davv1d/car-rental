@@ -73,7 +73,6 @@ public class CarFacade {
                 .map(rentalDate -> carDetailsService.getAvailabilityCars(rentalDate.getDateOfRent(), rentalDate.getDateOfReturn()))
                 .map(cars -> carMapper.mapToCarDtoList(cars))
                 .effect(carsDto -> carsDto, s -> new ArrayList<>());
-//        return carMapper.mapToCarDtoList(carDetailsService.getAvailabilityCars(dateOfRentLocal, dateOfReturnLocal));
     }
 
     public ResponseEntity<?> getCarByVin(String vin) {

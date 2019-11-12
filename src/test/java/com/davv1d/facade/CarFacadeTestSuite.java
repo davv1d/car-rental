@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +79,22 @@ public class CarFacadeTestSuite {
         ResponseEntity<?> responseEntity = carFacade.changeAvailability(vinNumber, user);
         //Then
         assertTrue(responseEntity.getStatusCode().isError());
+    }
+
+    @Test
+    public void shouldGetAvailabilityCars() {
+        //Given
+        Brand brand = new Brand("test brand");
+        Brand savedBrand = brandRepository.save(brand);
+        Model model = new Model("test model", brand);
+        Model savedModel = modelRepository.save(model);
+        Car car1 = new Car("testvin1", savedBrand, savedModel, true);
+        carRepository.save(car1);
+        //When
+        List<CarDto> availabilityCars = carFacade.getAvailabilityCars(LocalDateTime.now().plusDays(1).toString(), LocalDateTime.now().plusDays(2).toString());
+        //Then
+        assertEquals(1, availabilityCars.size());
+        //Clean up
+        brandRepository.deleteByName(brand.getName());
     }
 }
