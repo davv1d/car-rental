@@ -1,9 +1,7 @@
 package com.davv1d.controller;
 
 import com.davv1d.domain.user.EmailUpdater;
-import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.UserDto;
-import com.davv1d.errors.UsernameNotFoundException;
 import com.davv1d.mapper.user.UserMapper;
 import com.davv1d.service.EmptyValuesClassCreator;
 import com.davv1d.service.db.UserDbDetailsService;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
