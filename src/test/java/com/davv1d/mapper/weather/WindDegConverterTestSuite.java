@@ -35,6 +35,5 @@ public class WindDegConverterTestSuite {
         //Then
         assertEquals("task", resultWind.getDeg());
         assertEquals("50", resultWind.getSpeed());
-
     }
 }
