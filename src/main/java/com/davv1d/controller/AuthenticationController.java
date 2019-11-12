@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/v1/api/auth")
 public class AuthenticationController {
     @Autowired
     private UserFacade userFacade;

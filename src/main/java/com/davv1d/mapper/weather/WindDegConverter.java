@@ -11,8 +11,12 @@ public class WindDegConverter {
     private final List<String> directions = Arrays.asList("N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW");
     
     public Wind mapWinDegreeToDirection(Wind wind) {
-        double degree = Double.parseDouble(wind.getDeg());
-        int number = (int)((degree / 22.5) + 0.5);
-        return new Wind(directions.get(number % 16), wind.getSpeed());
+        try {
+            double degree = Double.parseDouble(wind.getDeg());
+            int number = (int)((degree / 22.5) + 0.5);
+            return new Wind(directions.get(number % 16), wind.getSpeed());
+        } catch (NumberFormatException e) {
+            return wind;
+        }
     }
 }

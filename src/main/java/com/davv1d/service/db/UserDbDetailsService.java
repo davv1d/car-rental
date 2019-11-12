@@ -5,7 +5,7 @@ import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.role.RoleFactory;
 import com.davv1d.functional.Result;
 import com.davv1d.repository.UserRepository;
-import com.davv1d.service.validate.ExistValidator;
+import com.davv1d.service.validate.ExistenceChecker;
 import com.davv1d.service.validate.RoleValidator;
 import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +52,8 @@ public class UserDbDetailsService {
     }
 
     public Result<User> changeUserEmail(final EmailUpdater emailUpdater) {
-        return ExistValidator.ifItDoesNotExist(emailUpdater.getEmail(), userRepository::findByEmail)
-                .flatMap(s -> ExistValidator.ifExists(emailUpdater.getUsername(), userRepository::findByUsername))
+        return ExistenceChecker.ifItDoesNotExist(emailUpdater.getEmail(), userRepository::findByEmail)
+                .flatMap(s -> ExistenceChecker.ifExists(emailUpdater.getUsername(), userRepository::findByUsername))
                 .map(user -> new User(user.getId(), user.getUsername(), user.getPassword(), emailUpdater.getEmail(), user.getRole(), user.getRentals()))
                 .flatMap(this::save);
     }

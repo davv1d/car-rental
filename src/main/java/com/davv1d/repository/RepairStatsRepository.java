@@ -14,4 +14,6 @@ public interface RepairStatsRepository extends CrudRepository<RepairStats, Long>
     RepairStats save(RepairStats repairStats);
 
     List<RepairStats> findByVinNumber(String vinNumber);
+
+    void deleteByVinNumber(String vinNumber);
 }

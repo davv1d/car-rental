@@ -24,9 +24,6 @@ public class UserFacade {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserValidator userValidator;
-
-    @Autowired
     private UserDbDetailsService userDbDetailsService;
 
     @Autowired
