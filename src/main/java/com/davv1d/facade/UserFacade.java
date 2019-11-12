@@ -6,7 +6,6 @@ import com.davv1d.mapper.user.UserMapper;
 import com.davv1d.repository.UserLoginRepository;
 import com.davv1d.security.JwtProvider;
 import com.davv1d.service.db.UserDbDetailsService;
-import com.davv1d.service.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,8 +54,8 @@ public class UserFacade {
         return ResponseEntity.ok(new LoginResponseDto(jwtToken, auth));
     }
 
-    public ResponseEntity<?> registerUser(SingUpDto singUpDto) {
-        return userDbDetailsService.saveUser(userMapper.mapToUser(singUpDto))
+    public ResponseEntity<?> registerUser(SignUpDto signUpDto) {
+        return userDbDetailsService.saveUser(userMapper.mapToUser(signUpDto))
                 .effect(user1 -> ResponseEntity.ok(user1.getUsername()), s -> ResponseEntity.badRequest().body(s));
     }
 }

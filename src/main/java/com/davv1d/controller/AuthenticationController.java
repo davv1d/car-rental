@@ -1,7 +1,7 @@
 package com.davv1d.controller;
 
 import com.davv1d.domain.user.login.LoginRequestDto;
-import com.davv1d.domain.user.login.SingUpDto;
+import com.davv1d.domain.user.login.SignUpDto;
 import com.davv1d.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SingUpDto singUpDto) {
-        return userFacade.registerUser(singUpDto);
+    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+        return userFacade.registerUser(signUpDto);
     }
 }

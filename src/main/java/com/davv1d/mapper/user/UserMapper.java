@@ -2,9 +2,7 @@ package com.davv1d.mapper.user;
 
 import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.UserDto;
-import com.davv1d.domain.user.login.SingUpDto;
-import com.davv1d.domain.user.role.Role;
-import com.davv1d.domain.user.role.RoleFactory;
+import com.davv1d.domain.user.login.SignUpDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -27,8 +25,8 @@ public class UserMapper {
                 .collect(Collectors.toList());
     }
 
-    public User mapToUser(final SingUpDto singUpDto) {
-        String password = passwordEncoder.encode(singUpDto.getPassword());
-        return new User(singUpDto.getUsername(), password, singUpDto.getEmail(), singUpDto.getRole());
+    public User mapToUser(final SignUpDto signUpDto) {
+        String password = passwordEncoder.encode(signUpDto.getPassword());
+        return new User(signUpDto.getUsername(), password, signUpDto.getEmail(), signUpDto.getRole());
     }
 }
