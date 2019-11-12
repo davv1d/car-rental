@@ -25,12 +25,12 @@ public class RentalController {
         return rentalMapper.mapToRentalDtoList(rentalDbService.getAll());
     }
 
-    @GetMapping(value = "/rental/", params = "vin")
+    @GetMapping(value = "/rental", params = "vin")
     public List<RentalDto> getRentalsByCarVinNumber(@RequestParam String vin) {
         return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByCarVinNumber(vin));
     }
 
-    @GetMapping(value = "/rental/", params = "username")
+    @GetMapping(value = "/rental", params = "username")
     public List<RentalDto> getRentalsByUsername(@RequestParam String username) {
         return rentalMapper.mapToRentalDtoList(rentalDbService.getRentalsByUsername(username));
     }

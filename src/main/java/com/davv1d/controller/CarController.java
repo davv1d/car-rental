@@ -26,7 +26,7 @@ public class CarController {
         carFacade.createCar(carDto);
     }
 
-    @PutMapping("/availability")
+    @PutMapping("/availability/change")
     public void changeAvailability(@RequestBody String vinNumber, Principal principal) {
         carFacade.changeAvailability(vinNumber, principal);
     }
