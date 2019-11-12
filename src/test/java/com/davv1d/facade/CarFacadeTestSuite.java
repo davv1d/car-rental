@@ -93,7 +93,7 @@ public class CarFacadeTestSuite {
         //When
         List<CarDto> availabilityCars = carFacade.getAvailabilityCars(LocalDateTime.now().plusDays(1).toString(), LocalDateTime.now().plusDays(2).toString());
         //Then
-        assertEquals(1, availabilityCars.size());
+        assertFalse(availabilityCars.isEmpty());
         //Clean up
         brandRepository.deleteByName(brand.getName());
     }

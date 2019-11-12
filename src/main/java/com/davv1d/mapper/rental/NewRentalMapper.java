@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class NewRentalMapper {
     public NewRental mapToNewRental(NewRentalDto newRentalDto, String username) {
         return new NewRental(
-                newRentalDto.getId(),
                 username,
                 newRentalDto.getVin(),
                 newRentalDto.getDateOfRent(),

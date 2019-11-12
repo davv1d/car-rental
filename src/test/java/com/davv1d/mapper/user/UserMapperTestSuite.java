@@ -3,6 +3,7 @@ package com.davv1d.mapper.user;
 import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.UserDto;
 import com.davv1d.domain.user.login.SignUpDto;
+import com.davv1d.domain.user.role.Role;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class UserMapperTestSuite {
 
     @Before
     public void init() {
-        user = new User("username", "password", "test@test.com", "client");
+        user = new User("username", "password", "test@test.com", Role.ROLE_CLIENT.name());
     }
 
     @Test
@@ -55,7 +56,7 @@ public class UserMapperTestSuite {
     @Test
     public void shouldFetchSignUpDtoAndReturnUser() {
         //Given
-        SignUpDto singUpDto = new SignUpDto("username", "password", "test@test.com", "admin");
+        SignUpDto singUpDto = new SignUpDto("username", "password", "test@test.com", Role.ROLE_ADMIN.name());
         //When
         User user = userMapper.mapToUser(singUpDto);
         //Then

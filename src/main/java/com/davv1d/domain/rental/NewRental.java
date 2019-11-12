@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class NewRental {
-    private long id;
     private String username;
     private String vinNumber;
     private LocalDateTime dateOfRent;

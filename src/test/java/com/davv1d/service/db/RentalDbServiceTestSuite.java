@@ -3,9 +3,11 @@ package com.davv1d.service.db;
 import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
+import com.davv1d.domain.rental.NewRental;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.user.User;
 import com.davv1d.domain.user.role.Role;
+import com.davv1d.functional.Result;
 import com.davv1d.repository.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,12 +85,14 @@ public class RentalDbServiceTestSuite {
         carRepository.save(car1);
         LocalDateTime dateOfRent = LocalDateTime.now().plusDays(1);
         LocalDateTime dateOfReturn = dateOfRent.plusDays(2);
-        Rental rental = new Rental(saveUser, car1, dateOfRent, dateOfReturn);
+        NewRental newRental = new NewRental(saveUser.getUsername(), car1.getVinNumber(), dateOfRent, dateOfReturn);
         //When
-        Rental savedRental = rentalDbService.save(rental);
+        Result<Rental> savedRentalResult = rentalDbService.save(newRental);
         //Then
+        Rental savedRental = savedRentalResult.getOrElse(null);
         try {
-            assertNotNull(savedRental.getId());
+            assertEquals(Result.Success.class, savedRentalResult.getClass());
+            assertNotNull(savedRental);
             Optional<Rental> optionalRental = rentalRepository.findById(savedRental.getId());
             assertTrue(optionalRental.isPresent());
         } finally {
@@ -111,12 +115,12 @@ public class RentalDbServiceTestSuite {
         carRepository.save(car1);
         LocalDateTime dateOfRent = LocalDateTime.now().plusDays(1);
         LocalDateTime dateOfReturn = dateOfRent.plusDays(2);
-        Rental rental = new Rental(user, car1, dateOfRent, dateOfReturn);
+        NewRental rental = new NewRental(user.getUsername(), car1.getVinNumber(), dateOfRent, dateOfReturn);
         //When
-        Rental savedRental = rentalDbService.save(rental);
+        Result<Rental> rentalResult = rentalDbService.save(rental);
         //Then
         try {
-            assertNull(savedRental.getId());
+            assertEquals(Result.Failure.class, rentalResult.getClass());
         } finally {
             //Clean up
             brandRepository.deleteByName(brand.getName());
