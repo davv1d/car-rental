@@ -1,10 +1,14 @@
 package com.davv1d.controller;
 
+import com.davv1d.domain.rental.NewRental;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.rental.RentalDto;
-import com.davv1d.domain.rental.SaveRentalDto;
+import com.davv1d.domain.rental.NewRentalDto;
+import com.davv1d.mapper.rental.NewRentalMapper;
 import com.davv1d.mapper.rental.RentalMapper;
 import com.davv1d.service.db.RentalDbService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +18,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 public class RentalController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RentalController.class);
     @Autowired
     private RentalDbService rentalDbService;
 
     @Autowired
     private RentalMapper rentalMapper;
+
+    @Autowired
+    private NewRentalMapper newRentalMapper;
 
     @GetMapping("/rental")
     public List<RentalDto> getRentals() {
@@ -46,8 +54,8 @@ public class RentalController {
     }
 
     @PostMapping("/rental/create")
-    public void createRental(@RequestBody SaveRentalDto rentalDto, Principal principal) {
-        Rental rental = rentalMapper.mapToRental(rentalDto, principal.getName());
-        rentalDbService.save(rental);
+    public void createRental(@RequestBody NewRentalDto newRentalDto, Principal principal) {
+        NewRental newRental = newRentalMapper.mapToNewRental(newRentalDto, principal.getName());
+        rentalDbService.save(newRental).errorEffect(LOGGER::error);
     }
 }

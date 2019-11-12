@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class UserFacade {
+public class AuthenticationFacade {
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -44,14 +44,14 @@ public class UserFacade {
                         loginRequest.getUsername(),
                         loginRequest.getPassword()
                 ));
-        String auth = null;
+        String role = null;
         for (GrantedAuthority authority : authenticate.getAuthorities()) {
-            auth = authority.getAuthority();
+            role = authority.getAuthority();
         }
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String jwtToken = jwtProvider.generateJwtToken(authenticate);
         userLoginRepository.save(new UserLogin(loginRequest.getUsername(), LocalDateTime.now()));
-        return ResponseEntity.ok(new LoginResponseDto(jwtToken, auth));
+        return ResponseEntity.ok(new LoginResponseDto(jwtToken, role));
     }
 
     public ResponseEntity<?> registerUser(SignUpDto signUpDto) {

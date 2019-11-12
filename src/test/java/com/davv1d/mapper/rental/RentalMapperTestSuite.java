@@ -6,7 +6,7 @@ import com.davv1d.domain.car.Model;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.rental.RentalDto;
-import com.davv1d.domain.rental.SaveRentalDto;
+import com.davv1d.domain.rental.NewRentalDto;
 import com.davv1d.domain.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,13 +62,14 @@ public class RentalMapperTestSuite {
         //When
         List<RentalDto> listOfRentalsDto = rentalMapper.mapToRentalDtoList(listOfRentals);
         //Then
-        assertEquals(listOfRentals.size(),listOfRentalsDto.size());
-        assertEquals(listOfRentals.get(0).getUser().getUsername(),listOfRentalsDto.get(0).getUsername());
+        assertEquals(listOfRentals.size(), listOfRentalsDto.size());
+        assertEquals(listOfRentals.get(0).getUser().getUsername(), listOfRentalsDto.get(0).getUsername());
     }
+
     @Test
     public void shouldReturnRentalFromRentalDto() {
         //Given
-        CarDto carDto = new CarDto("123","audi","a8",false);
+        CarDto carDto = new CarDto("123", "audi", "a8", false);
         RentalDto rentalDto = new RentalDto(1, "username", carDto, LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(8));
         //When
         Rental rental = rentalMapper.mapToRental(rentalDto);
@@ -79,44 +80,17 @@ public class RentalMapperTestSuite {
         assertEquals(rentalDto.getUsername(), rental.getUser().getUsername());
         assertEquals(rentalDto.getDateOfRent(), rental.getDateOfRent());
     }
-    @Test
-    public void shouldReturnRentalFromSaveRentalDto() {
-        //Given
-        SaveRentalDto saveRentalDto = new SaveRentalDto(1, "username","123", LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(8));
-        //When
-        Rental rental = rentalMapper.mapToRental(saveRentalDto);
-        //Then
-        assertEquals(saveRentalDto.getVin(), rental.getCar().getVinNumber());
-        assertEquals(saveRentalDto.getDateOfReturn(), rental.getDateOfReturn());
-        assertEquals(saveRentalDto.getUsername(), rental.getUser().getUsername());
-        assertEquals(saveRentalDto.getDateOfRent(), rental.getDateOfRent());
-    }
+
     @Test
     public void shouldReturnRentalFromSaveRentalDtoAndUsername() {
         //Given
-        SaveRentalDto saveRentalDto = new SaveRentalDto(1,"username","123", LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(8));
+        NewRentalDto newRentalDto = new NewRentalDto(1, "123", LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(8));
         //When
-        Rental rental = rentalMapper.mapToRental(saveRentalDto,"username");
+        Rental rental = rentalMapper.mapToRental(newRentalDto, "username");
         //Then
-        assertEquals(saveRentalDto.getVin(), rental.getCar().getVinNumber());
-        assertEquals(saveRentalDto.getDateOfReturn(), rental.getDateOfReturn());
-        assertEquals(saveRentalDto.getUsername(), rental.getUser().getUsername());
-        assertEquals(saveRentalDto.getDateOfRent(), rental.getDateOfRent());
-    }
-    @Test
-    public void shouldReturnRentalList(){
-        //Given
-        CarDto carDto = new CarDto("123","audi","a8",false);
-        RentalDto rentalDto = new RentalDto(1, "username", carDto, LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(8));
-        List<RentalDto> listOfRentalsDto = new ArrayList<>();
-        listOfRentalsDto.add(rentalDto);
-        listOfRentalsDto.add(rentalDto);
-        //When
-        List<Rental> listOfRentals = rentalMapper.mapToRentalList(listOfRentalsDto);
-        //Then
-        assertEquals(listOfRentalsDto.size(),listOfRentals.size());
-        assertEquals(listOfRentalsDto.get(0).getUsername(),listOfRentals.get(0).getUser().getUsername());
-        assertEquals(listOfRentalsDto.get(0).getCar().getVinNumber(),listOfRentals.get(0).getCar().getVinNumber());
-        assertEquals(listOfRentalsDto.get(0).getDateOfRent(),listOfRentals.get(0).getDateOfRent());
+        assertEquals(newRentalDto.getVin(), rental.getCar().getVinNumber());
+        assertEquals(newRentalDto.getDateOfReturn(), rental.getDateOfReturn());
+        assertEquals("username", rental.getUser().getUsername());
+        assertEquals(newRentalDto.getDateOfRent(), rental.getDateOfRent());
     }
 }

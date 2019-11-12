@@ -1,14 +1,19 @@
 package com.davv1d.service.db;
 
 import com.davv1d.domain.car.Car;
+import com.davv1d.domain.rental.NewRental;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.user.User;
+import com.davv1d.functional.Result;
 import com.davv1d.repository.RentalRepository;
+import com.davv1d.service.validate.RentalValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.davv1d.service.validate.ExistenceChecker.*;
 
 @Service
 public class RentalDbService {
@@ -16,18 +21,11 @@ public class RentalDbService {
     private RentalRepository rentalRepository;
 
     @Autowired
-    private CarDetailsService carDetailsService;
+    private RentalValidator rentalValidator;
 
-    @Autowired
-    private UserDbDetailsService userDbDetailsService;
-
-    public Rental save(final Rental rental) {
-        Optional<Car> optionalCar = carDetailsService.getByVinNumber(rental.getCar().getVinNumber());
-        Optional<User> optionalUser = userDbDetailsService.getUserByUsername(rental.getUser().getUsername());
-        if (optionalCar.isPresent() && optionalUser.isPresent()) {
-           return rentalRepository.save(new Rental(optionalUser.get(), optionalCar.get(), rental.getDateOfRent(), rental.getDateOfReturn()));
-        }
-        return rental;
+    public Result<Rental> save(final NewRental newRental) {
+       return rentalValidator.checkRental(newRental)
+                .map(rentalRepository::save);
     }
 
     public List<Rental> getRentalsByCarVinNumber(final String vinNumber) {

@@ -22,6 +22,8 @@ public abstract class Result<V> implements Serializable {
 
     public abstract void forEach(Consumer<V> success, Consumer<String> failure);
 
+    public abstract void errorEffect(Consumer<String> errorMessage);
+
     public static class Failure<V> extends Result<V> {
         private final String message;
 
@@ -62,6 +64,11 @@ public abstract class Result<V> implements Serializable {
         @Override
         public void forEach(Consumer<V> success, Consumer<String> failure) {
             failure.accept(message);
+        }
+
+        @Override
+        public void errorEffect(Consumer<String> c) {
+            c.accept(message);
         }
     }
 
@@ -117,6 +124,9 @@ public abstract class Result<V> implements Serializable {
         public void forEach(Consumer<V> success, Consumer<String> failure) {
             success.accept(value);
         }
+
+        @Override
+        public void errorEffect(Consumer<String> errorMessage) {}
     }
 
     public static <V> Result<V> failure(String message) {

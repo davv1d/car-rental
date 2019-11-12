@@ -72,7 +72,10 @@ public class CarFacade {
         return DateValidator.checkDate(new RentalDate(dateOfRentLocal, dateOfReturnLocal))
                 .map(rentalDate -> carDetailsService.getAvailabilityCars(rentalDate.getDateOfRent(), rentalDate.getDateOfReturn()))
                 .map(cars -> carMapper.mapToCarDtoList(cars))
-                .effect(carsDto -> carsDto, s -> new ArrayList<>());
+                .effect(carsDto -> carsDto, s -> {
+                    LOGGER.error(s);
+                    return new ArrayList<>();
+                });
     }
 
     public ResponseEntity<?> getCarByVin(String vin) {
