@@ -1,9 +1,8 @@
 package com.davv1d.controller;
 
 import com.davv1d.domain.rental.NewRental;
-import com.davv1d.domain.rental.Rental;
-import com.davv1d.domain.rental.RentalDto;
 import com.davv1d.domain.rental.NewRentalDto;
+import com.davv1d.domain.rental.RentalDto;
 import com.davv1d.mapper.rental.NewRentalMapper;
 import com.davv1d.mapper.rental.RentalMapper;
 import com.davv1d.service.db.RentalDbService;

@@ -4,8 +4,6 @@ import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
 import com.davv1d.domain.user.User;
-import com.davv1d.domain.user.role.Role;
-import com.davv1d.functional.Result;
 import com.davv1d.service.db.CarDetailsService;
 import com.davv1d.service.db.UserDbDetailsService;
 import org.junit.Test;

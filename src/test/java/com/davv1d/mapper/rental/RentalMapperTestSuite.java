@@ -4,9 +4,9 @@ import com.davv1d.domain.car.Brand;
 import com.davv1d.domain.car.Car;
 import com.davv1d.domain.car.Model;
 import com.davv1d.domain.car.dto.CarDto;
+import com.davv1d.domain.rental.NewRentalDto;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.rental.RentalDto;
-import com.davv1d.domain.rental.NewRentalDto;
 import com.davv1d.domain.user.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

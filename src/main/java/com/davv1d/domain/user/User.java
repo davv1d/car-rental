@@ -1,7 +1,6 @@
 package com.davv1d.domain.user;
 
 import com.davv1d.domain.rental.Rental;
-import com.davv1d.domain.user.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

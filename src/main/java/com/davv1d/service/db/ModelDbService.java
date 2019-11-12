@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.davv1d.service.validate.ExistenceChecker.*;
+import static com.davv1d.service.validate.ExistenceChecker.ifExists;
 
 @Service
 public class ModelDbService {

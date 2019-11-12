@@ -4,7 +4,7 @@ import com.davv1d.domain.car.Car;
 import com.davv1d.functional.Result;
 import org.springframework.stereotype.Service;
 
-import static com.davv1d.service.validate.ExistenceChecker.*;
+import static com.davv1d.service.validate.ExistenceChecker.ifExists;
 
 @Service
 public class CarDetailsService extends CarDbService {

@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 
 import static com.davv1d.service.validate.DateValidator.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DateValidatorTestSuite {
     @Test

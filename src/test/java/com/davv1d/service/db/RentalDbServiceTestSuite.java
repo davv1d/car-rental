@@ -6,7 +6,6 @@ import com.davv1d.domain.car.Model;
 import com.davv1d.domain.rental.NewRental;
 import com.davv1d.domain.rental.Rental;
 import com.davv1d.domain.user.User;
-import com.davv1d.domain.user.role.Role;
 import com.davv1d.functional.Result;
 import com.davv1d.repository.*;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.davv1d.domain.user.role.Role.*;
+import static com.davv1d.domain.user.role.Role.ROLE_CLIENT;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)

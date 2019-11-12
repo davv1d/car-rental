@@ -3,7 +3,6 @@ package com.davv1d.facade;
 import com.davv1d.domain.car.RepairStats;
 import com.davv1d.domain.car.dto.CarDto;
 import com.davv1d.domain.rental.RentalDate;
-import com.davv1d.functional.Result;
 import com.davv1d.mapper.car.CarMapper;
 import com.davv1d.repository.RepairStatsRepository;
 import com.davv1d.service.db.BrandDbService;
@@ -22,7 +21,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
 
 @Component
 public class CarFacade {

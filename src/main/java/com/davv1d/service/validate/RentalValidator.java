@@ -11,8 +11,8 @@ import com.davv1d.service.db.UserDbDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.davv1d.service.validate.DateValidator.*;
-import static com.davv1d.service.validate.ExistenceChecker.*;
+import static com.davv1d.service.validate.DateValidator.checkDate;
+import static com.davv1d.service.validate.ExistenceChecker.ifExists;
 
 @Service
 public class RentalValidator {
